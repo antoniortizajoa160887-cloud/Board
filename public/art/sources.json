@@ -2,5 +2,12 @@
  "bg/casino.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_ce8b6b1a-8187-4699-9473-6fce0bfd4255.png\",\"w\":720}",
  "bg/felt.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_1ec530cb-0c96-425f-b79e-70ab5fd58199.png\",\"w\":720}",
  "chars/zip.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_3ec08c22-f270-4b3a-9877-7218ee406d6a.png\",\"w\":512}",
- "icons/stats.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_72834a9b-3a57-4f36-af1a-5507189ef803.png\",\"w\":384}"
+ "icons/stats.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_72834a9b-3a57-4f36-af1a-5507189ef803.png\",\"w\":384}",
+ "bg/hall.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_ebb34289-6d63-4447-b13c-7343b4a867a0.png\",\"w\":720}",
+ "cards/back.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044823_6e9ec2f0-d57c-4127-9f8b-19aef01b7130.png\",\"w\":360}",
+ "chars/ollie.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_f3920df5-bbaa-464f-8f94-4b232a7a493b.png\",\"w\":512}",
+ "icons/arcade.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044824_341208f3-a8ff-413c-9c0a-8108815ee381.png\",\"w\":384}",
+ "icons/board.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044823_e77b3bb3-aee1-4a31-93a4-a4f890e106f0.png\",\"w\":384}",
+ "icons/casino.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_b80baad6-b8df-4811-8a0b-813cd39d8f6c.png\",\"w\":384}",
+ "ui/logo.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_93132b73-63bf-4a68-bee3-2411998595fa.png\",\"w\":640}"
 }
