@@ -677,3 +677,5 @@ img.dealer.hopping { animation: hop .5s cubic-bezier(.3,1.6,.5,1), bob 3.4s .5s 
 .chip-btn.on { box-shadow: none; }
 .he-avatar, .cc-avatar { overflow: hidden; }
 .av-img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
+.zip-level { background-image: linear-gradient(180deg, transparent 30%, rgba(5,10,34,.75)), var(--pic), linear-gradient(135deg, var(--a), var(--b)); background-size: cover; background-position: center; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
+.zip-level.locked { filter: grayscale(.6) brightness(.7); }

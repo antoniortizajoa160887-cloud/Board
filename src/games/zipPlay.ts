@@ -8,7 +8,7 @@ import { coinBurst, fmt, h } from '../ui/dom';
 import { back, go, type Screen } from '../ui/router';
 import { dialog, topBar } from '../ui/shell';
 import { drawBackground, drawEnemy, drawTiles, drawZip, pearl, preloadZip, THEMES } from './zipArt';
-import { say } from '../ui/assets';
+import { art, say } from '../ui/assets';
 import { howToPlay } from './howto';
 
 const LEVEL_ES = ['Playa del Atardecer', 'Cala de Coral', 'Laguna de Medusas', 'Carrera del Arrecife', 'Muelles a la Luz de la Luna', 'Arrecife de Neón'];
@@ -50,7 +50,7 @@ export const zipScreen: Screen = root => {
       const open = unlocked(i), st = stars[i] ?? 0;
       const th = THEMES[d.theme];
       return h('button.zip-level' + (open ? '' : '.locked'), {
-        style: `--a:${th.sky[1]};--b:${th.sky[2]}`,
+        style: `--a:${th.sky[1]};--b:${th.sky[2]};--pic:url(${art(th.bg)})`,
         onclick: () => { sfx('click'); if (open) go(zipLevel(i)); else dialog(levelName(i), h('p', {}, tr('Finish the level before this one to open it.', 'Termina el nivel anterior para abrir este.'))); },
       },
       h('span.zl-num', {}, String(i + 1)),
