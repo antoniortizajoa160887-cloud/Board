@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/art
+          git add public/art tools/raw 2>/dev/null || git add public/art
           if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
           git commit -m "Fetch generated art and audio"
           for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 5; done
