@@ -727,3 +727,4 @@ img.pb-dealer { width: 76px; height: 76px; object-fit: contain; flex-shrink: 0; 
 .pb-opp-face:first-child { margin-left: 0; }
 .pb-cost { font-size: 13px; color: var(--muted); font-weight: 700; }
 .pb-pick { min-width: 36px; height: 36px; font-size: 14px; }
+[hidden] { display: none !important; }
