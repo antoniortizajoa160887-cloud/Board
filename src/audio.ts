@@ -73,6 +73,7 @@ function noise(start: number, dur: number, gain = 0.2, freq = 3000) {
 export type Sfx = 'chip' | 'card' | 'click' | 'reel' | 'stop' | 'win' | 'bigwin' | 'lose' | 'ball' | 'tick' | 'daub' | 'jackpot' | 'jump' | 'jet' | 'pearl' | 'stomp' | 'hurt' | 'dice' | 'spring';
 
 export function sfx(name: Sfx) {
+  if (name === 'bigwin' || name === 'jackpot') window.dispatchEvent(new CustomEvent('ll-big', { detail: name }));
   const c = ensure();
   if (!c || !profile.settings.sound) return;
   const t = c.currentTime;

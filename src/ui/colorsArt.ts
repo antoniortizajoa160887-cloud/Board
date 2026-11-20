@@ -58,7 +58,7 @@ export function ccCardSvg(c: CCard | null, faceDown = false, shownColor?: CColor
 
 /** Simple round avatars for the computer players (original characters). */
 export const BOTS = [
-  { name: 'Pip', color: '#2ef2d0', face: '🐧' },
-  { name: 'Coral', color: '#ff6b81', face: '🦀' },
-  { name: 'Moe', color: '#b07bff', face: '🦭' },
+  { name: 'Pip', color: '#2ef2d0', face: '🐧', pic: 'chars/pip.webp' },
+  { name: 'Coral', color: '#ff6b81', face: '🦀', pic: 'chars/coral.webp' },
+  { name: 'Moe', color: '#b07bff', face: '🦭', pic: 'chars/moe.webp' },
 ];

@@ -7,6 +7,7 @@ import { makeRng } from '../core/rng';
 import { buzz } from '../platform';
 import { addChips, countPlay, profile, save } from '../save';
 import { BOTS, CC_HEX, ccCardSvg } from '../ui/colorsArt';
+import { img, say as speak } from '../ui/assets';
 import { coinBurst, fmt, h, toast } from '../ui/dom';
 import type { Screen } from '../ui/router';
 import { dialog, topBar } from '../ui/shell';
@@ -84,6 +85,7 @@ function startGame(root: HTMLElement, backToSetup: () => void, setStop: (stop: (
   const passBtn = h('button.btn.small', { onclick: () => { pass(s, rng); seen = s.log.length; sfx('click'); render(); schedule(); } }, tr('Keep it', 'Quedármela'));
 
   const humanTurn = () => s.current === 0 && s.winner === null;
+  let wasMine = false, myTurns = 0;
 
   function render() {
     if (!alive) return;
@@ -91,7 +93,7 @@ function startGame(root: HTMLElement, backToSetup: () => void, setStop: (stop: (
       const seat = i + 1;
       const b = bots[i];
       return h('div.cc-opp' + (s.current === seat && s.winner === null ? '.turn' : ''), {},
-        h('div.cc-avatar', { style: `--ring:${b.color}` }, b.face),
+        h('div.cc-avatar', { style: `--ring:${b.color}` }, img(b.pic, 'av-img', b.name)),
         h('div.cc-opp-name', {}, p.name),
         h('div.cc-backs', {}, ...Array.from({ length: Math.min(p.hand.length, 10) }, () => h('span.cc-back'))),
         h('div.cc-count', {}, `${p.hand.length}`),
@@ -123,6 +125,8 @@ function startGame(root: HTMLElement, backToSetup: () => void, setStop: (stop: (
     }));
     handEl.style.setProperty('--n', String(me.length));
     passBtn.hidden = !(humanTurn() && s.drawnPlayable !== null);
+    if (humanTurn() && !wasMine && ++myTurns % 3 === 1) speak('turn');
+    wasMine = humanTurn();
     if (s.winner !== null) status.textContent = '';
     else if (humanTurn()) status.textContent = s.pending ? tr(`+${s.pending} waiting: stack it or draw ${s.pending}`, `+${s.pending} pendiente: acumula o roba ${s.pending}`) : s.drawnPlayable !== null ? tr('Play the card you drew, or keep it', 'Juega la carta que robaste o quédatela') : tr('Your turn', 'Tu turno');
     else status.textContent = tr(`${s.players[s.current].name} is thinking…`, `${s.players[s.current].name} está pensando…`);

@@ -3,6 +3,7 @@ name: Android APK
 on:
   push:
     branches: [main, claude/project-thread-uflxfz]
+    paths-ignore: ['tools/art.json']
   pull_request:
   workflow_dispatch:
 
@@ -35,8 +36,9 @@ jobs:
           name: lucky-lagoon-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
       # The app checks this release for a newer build and offers the APK as a download.
+      # Only main publishes: work-in-progress branch pushes just build and test.
       - name: Publish as the latest APK
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

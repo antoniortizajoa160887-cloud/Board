@@ -1,21 +1,22 @@
 /** Canvas drawing for Zip: the otter, enemies, tiles and the parallax lagoon backgrounds. */
 import type { Enemy, Player, World } from '../core/platformer';
+import { art } from '../ui/assets';
 
-export interface Theme { sky: [string, string, string]; orb: string; orbR: number; rock: string; rockTop: string; far: string; water: string; stars: boolean }
+export interface Theme { bg: string; sky: [string, string, string]; orb: string; orbR: number; rock: string; rockTop: string; far: string; water: string; stars: boolean }
 
 export const THEMES: Theme[] = [
-  { sky: ['#2b1450', '#c2427a', '#ffb35c'], orb: '#ffd47a', orbR: 1.6, rock: '#3a2347', rockTop: '#ff9f6b', far: '#5a2457', water: '#7a2f63', stars: false },
-  { sky: ['#0b2a4a', '#1c6e8c', '#5fd3c4'], orb: '#fff1c1', orbR: 1.2, rock: '#1d3550', rockTop: '#ff7a8a', far: '#174260', water: '#1a5a74', stars: false },
-  { sky: ['#160f3a', '#3b1f6e', '#7a3aa8'], orb: '#e9d8ff', orbR: 1.1, rock: '#2a1f4f', rockTop: '#c48bff', far: '#2e2160', water: '#3c2a7a', stars: true },
-  { sky: ['#06263a', '#0c4f5e', '#23a08f'], orb: '#ffe9a8', orbR: 1.3, rock: '#14363f', rockTop: '#2ef2d0', far: '#0f3f4a', water: '#136070', stars: false },
-  { sky: ['#050a22', '#0f1a48', '#273a7a'], orb: '#f4f0d0', orbR: 1.4, rock: '#1a2140', rockTop: '#f5c542', far: '#141c3c', water: '#1c2a5a', stars: true },
-  { sky: ['#0a0420', '#2a0b4a', '#5a127a'], orb: '#ff6bd5', orbR: 1.2, rock: '#22103a', rockTop: '#2ef2d0', far: '#2b0f48', water: '#3d1466', stars: true },
+  { bg: 'zip/bg-sunset.webp', sky: ['#2b1450', '#c2427a', '#ffb35c'], orb: '#ffd47a', orbR: 1.6, rock: '#3a2347', rockTop: '#ff9f6b', far: '#5a2457', water: '#7a2f63', stars: false },
+  { bg: 'zip/bg-day.webp', sky: ['#0b2a4a', '#1c6e8c', '#5fd3c4'], orb: '#fff1c1', orbR: 1.2, rock: '#1d3550', rockTop: '#ff7a8a', far: '#174260', water: '#1a5a74', stars: false },
+  { bg: 'zip/bg-twilight.webp', sky: ['#160f3a', '#3b1f6e', '#7a3aa8'], orb: '#e9d8ff', orbR: 1.1, rock: '#2a1f4f', rockTop: '#c48bff', far: '#2e2160', water: '#3c2a7a', stars: true },
+  { bg: 'zip/bg-reef.webp', sky: ['#06263a', '#0c4f5e', '#23a08f'], orb: '#ffe9a8', orbR: 1.3, rock: '#14363f', rockTop: '#2ef2d0', far: '#0f3f4a', water: '#136070', stars: false },
+  { bg: 'zip/bg-gold.webp', sky: ['#050a22', '#0f1a48', '#273a7a'], orb: '#f4f0d0', orbR: 1.4, rock: '#1a2140', rockTop: '#f5c542', far: '#141c3c', water: '#1c2a5a', stars: true },
+  { bg: 'zip/bg-neon.webp', sky: ['#0a0420', '#2a0b4a', '#5a127a'], orb: '#ff6bd5', orbR: 1.2, rock: '#22103a', rockTop: '#2ef2d0', far: '#2b0f48', water: '#3d1466', stars: true },
 ];
 
 const rand = (i: number) => { const x = Math.sin(i * 127.1) * 43758.5453; return x - Math.floor(x); };
 
 /** Sky, orb, stars, far islands with palms, and a shimmering water band. camX in tiles, s = px per tile. */
-export function drawBackground(ctx: CanvasRenderingContext2D, th: Theme, camX: number, s: number, W: number, H: number, t: number) {
+function drawBackgroundDrawn(ctx: CanvasRenderingContext2D, th: Theme, camX: number, s: number, W: number, H: number, t: number) {
   const g = ctx.createLinearGradient(0, 0, 0, H);
   g.addColorStop(0, th.sky[0]); g.addColorStop(0.55, th.sky[1]); g.addColorStop(1, th.sky[2]);
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -179,7 +180,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 }
 
 /** Zip the otter: teal fur, orange scarf, red jet sneakers. (x, y) = feet centre in px. */
-export function drawZip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number, s: number, t: number) {
+function drawZipDrawn(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number, s: number, t: number) {
   if (p.hurtT > 0 && Math.floor(t * 14) % 2 === 0) return;
   const moving = Math.abs(p.vx) > 0.5;
   const air = !p.onGround;
@@ -238,7 +239,7 @@ export function drawZip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: 
   ctx.restore();
 }
 
-export function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, camX: number, s: number, t: number) {
+function drawEnemyDrawn(ctx: CanvasRenderingContext2D, e: Enemy, camX: number, s: number, t: number) {
   const x = (e.x + e.w / 2 - camX) * s, y = (e.y + e.h) * s;
   ctx.save(); ctx.translate(x, y);
   if (!e.alive) { ctx.globalAlpha = Math.max(0, 1 - e.deadT * 2); ctx.scale(1, -1); ctx.translate(0, s * 0.6); }
@@ -275,5 +276,65 @@ export function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, camX: number,
     }
     ctx.fillStyle = '#3a0a30'; ctx.beginPath(); ctx.arc(-k * 0.12, -k * 0.1, k * 0.04, 0, Math.PI * 2); ctx.arc(k * 0.12, -k * 0.1, k * 0.04, 0, Math.PI * 2); ctx.fill();
   }
+  ctx.restore();
+}
+
+// ---- Painted sprites -----------------------------------------------------------------------------------
+// The painted art is drawn when it has loaded; until then (or if a file is missing) the drawn version shows.
+
+const sprites = new Map<string, HTMLImageElement>();
+function sprite(path: string): HTMLImageElement | null {
+  let im = sprites.get(path);
+  if (!im) { im = new Image(); im.decoding = 'async'; im.src = art(path); sprites.set(path, im); }
+  return im.complete && im.naturalWidth > 0 ? im : null;
+}
+/** Starts loading every Zip sprite, so the first frames already have them. */
+export function preloadZip() {
+  for (const n of ['run1', 'run2', 'jump', 'idle', 'hurt', 'win', 'crab', 'jelly']) sprite(`zip/${n}.webp`);
+  for (const th of THEMES) sprite(th.bg);
+}
+
+/** Draws an image standing on (x, y), h pixels tall, flipped when facing left. */
+function stand(ctx: CanvasRenderingContext2D, im: HTMLImageElement, x: number, y: number, hgt: number, flip = false, sx = 1, sy = 1) {
+  const w = hgt * im.naturalWidth / im.naturalHeight;
+  ctx.save(); ctx.translate(x, y); ctx.scale((flip ? -1 : 1) * sx, sy);
+  ctx.drawImage(im, -w / 2, -hgt, w, hgt);
+  ctx.restore();
+}
+
+export function drawBackground(ctx: CanvasRenderingContext2D, th: Theme, camX: number, s: number, W: number, H: number, t: number) {
+  const im = sprite(th.bg);
+  if (!im) { drawBackgroundDrawn(ctx, th, camX, s, W, H, t); return; }
+  const h = H, w = h * im.naturalWidth / im.naturalHeight;
+  const off = -((camX * s * 0.15) % w);
+  for (let x = off; x < W; x += w) ctx.drawImage(im, x, 0, w + 1, h);
+}
+
+export function drawZip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number, s: number, t: number, pose?: 'idle' | 'win') {
+  const name = pose ?? (p.hurtT > 0 ? 'hurt' : !p.onGround ? 'jump' : Math.abs(p.vx) > 0.5 ? (Math.floor(p.runPhase * 2) % 2 ? 'run2' : 'run1') : 'idle');
+  const im = sprite(`zip/${name}.webp`);
+  if (!im) { drawZipDrawn(ctx, p, x, y, s, t); return; }
+  if (p.hurtT > 0 && Math.floor(t * 14) % 2 === 0) return;
+  if (p.jetT > 0) {
+    for (const fx of [-0.14, 0.12]) {
+      const k = s * 0.9, len = k * (0.35 + Math.random() * 0.2) * (p.jetT / 0.35 + 0.3);
+      const g = ctx.createLinearGradient(0, y, 0, y + len);
+      g.addColorStop(0, '#fff3a0'); g.addColorStop(0.4, '#ff8a2a'); g.addColorStop(1, '#ff3b3b00');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.moveTo(x + fx * k - k * 0.07, y); ctx.lineTo(x + fx * k, y + len); ctx.lineTo(x + fx * k + k * 0.07, y); ctx.fill();
+    }
+  }
+  stand(ctx, im, x, y + s * 0.04, s * 1.35, p.facing < 0, 1 + p.landT * 0.2, 1 - p.landT * 0.22);
+}
+
+export function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, camX: number, s: number, t: number) {
+  const im = sprite(`zip/${e.kind}.webp`);
+  if (!im) { drawEnemyDrawn(ctx, e, camX, s, t); return; }
+  const x = (e.x + e.w / 2 - camX) * s, y = (e.y + e.h) * s;
+  ctx.save();
+  if (!e.alive) ctx.globalAlpha = Math.max(0, 1 - e.deadT * 2);
+  const bob = e.kind === 'jelly' ? Math.sin(t * 3 + e.x) * s * 0.06 : 0;
+  const squash = e.kind === 'crab' ? 1 + Math.sin(t * 14 + e.x) * 0.04 : 1;
+  stand(ctx, im, x, y + bob + (e.alive ? 0 : s * 0.2), s * (e.kind === 'crab' ? 0.95 : 1.15), e.vx > 0, 1, e.alive ? squash : -1);
   ctx.restore();
 }

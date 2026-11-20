@@ -1,4 +1,5 @@
 import { sfx } from '../audio';
+import { say, sayCall } from '../ui/assets';
 import { BALLS_PER_GAME, drawOrder, LETTERS, letterOf, makeCard, PRIZE_PAYS, prizes, type BingoCard, type Prize } from '../core/bingo';
 import { makeRng } from '../core/rng';
 import { buzz } from '../platform';
@@ -90,7 +91,7 @@ export const bingoScreen: Screen = root => {
       countEl.textContent = `${i + 1} / ${BALLS_PER_GAME}`;
       recent.prepend(h('span.mini-ball.col-' + letterOf(n), {}, String(n)));
       while (recent.children.length > 8) recent.lastElementChild!.remove();
-      sfx('ball');
+      sfx('ball'); sayCall(n);
       const onCard = cards.some(c => c.includes(n));
       if (onCard) setTimeout(() => sfx('daub'), 150);
       render(n);
@@ -102,6 +103,7 @@ export const bingoScreen: Screen = root => {
           won += amount;
           addChips(amount);
           sfx(p === 'full' ? 'jackpot' : 'win');
+          if (p === 'full') say('bingo', { interrupt: true });
           buzz(p === 'full');
           coinBurst(cardsBox.children[ci], p === 'full' ? 50 : 12);
           resultBanner(result, `${p === 'full' ? tr('BINGO! ', '¡BINGO! ') : ''}${PRIZE_NAMES()[p]} +${fmt(amount)}`, 'win');

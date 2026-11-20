@@ -1,6 +1,7 @@
 import type { Card } from '../core/cards';
 import { isRed, rankLabel, SUIT_GLYPH } from '../core/cards';
 import type { Sym } from '../core/slots';
+import { art, imgHtml, olliePath, type Pose } from './assets';
 
 /** All game art is drawn in code as SVG, in the neon art-deco look (navy, gold, neon). */
 
@@ -28,6 +29,10 @@ const SYM_SVG: Record<Sym, string> = {
 };
 
 export function symbolSvg(s: Sym): string {
+  return imgHtml(`slots/${s}.webp`, `sym sym-${s}`, s);
+}
+/** The old drawn symbol, kept for tiny places. */
+export function symbolDrawn(s: Sym): string {
   return `<svg viewBox="0 0 100 100" class="sym sym-${s}" aria-label="${s}">${defs}${SYM_SVG[s]}</svg>`;
 }
 
@@ -47,7 +52,10 @@ function otterFace(cx: number, cy: number, s: number): string {
 }
 
 /** Ollie the otter dealer: gold vest and bow tie. */
-export function dealerSvg(): string {
+export function dealerSvg(pose: Pose = 'idle'): string {
+  return imgHtml(olliePath(pose), 'dealer', 'Ollie');
+}
+export function dealerDrawn(): string {
   return `<svg viewBox="0 0 120 130" class="dealer" aria-label="Ollie the dealer">${defs}
     <path d="M18 130 C18 92 34 78 60 78 C86 78 102 92 102 130Z" fill="#9b6845"/>
     <path d="M30 130 C30 98 42 86 60 86 C78 86 90 98 90 130Z" fill="url(#gGold)"/>
@@ -58,11 +66,11 @@ export function dealerSvg(): string {
   </svg>`;
 }
 
+const COURT: Record<number, string> = { 11: 'jack', 12: 'queen', 13: 'king' };
+
 export function cardSvg(c: Card | null, faceDown = false): string {
   if (!c || faceDown) {
-    return `<svg viewBox="0 0 70 98" class="pcard back">${defs}<rect x="1" y="1" width="68" height="96" rx="7" fill="#101b45" stroke="url(#gGold)" stroke-width="2"/>
-      <rect x="7" y="7" width="56" height="84" rx="4" fill="none" stroke="#f5c542" stroke-opacity=".6"/>
-      <path d="M35 18 L52 49 L35 80 L18 49Z" fill="none" stroke="url(#gGold)" stroke-width="2"/><path d="M35 30 L45 49 L35 68 L25 49Z" fill="url(#gPink)" opacity=".8"/></svg>`;
+    return imgHtml('cards/back.webp', 'pcard back');
   }
   const col = isRed(c) ? '#d42a4a' : '#141a33';
   const r = rankLabel(c.rank);
@@ -70,11 +78,18 @@ export function cardSvg(c: Card | null, faceDown = false): string {
   return `<svg viewBox="0 0 70 98" class="pcard">${defs}<rect x="1" y="1" width="68" height="96" rx="7" fill="#fdfaf2" stroke="#d9c79a" stroke-width="2"/>
     <text x="7" y="20" font-family="Georgia, serif" font-weight="700" font-size="17" fill="${col}">${r}</text>
     <text x="8" y="36" font-size="14" fill="${col}">${g}</text>
-    <text x="35" y="66" text-anchor="middle" font-size="${c.rank > 10 && c.rank < 14 ? 30 : 36}" fill="${col}">${c.rank > 10 && c.rank < 14 ? r + g : g}</text>
+    ${c.rank > 10 && c.rank < 14
+    ? `<rect x="15" y="22" width="40" height="56" rx="4" fill="${isRed(c) ? '#fbe6ea' : '#e6ebf6'}" stroke="#d9c79a"/><text x="35" y="60" text-anchor="middle" font-size="22" fill="${col}" opacity=".35">${g}</text><image href="${art(`cards/${COURT[c.rank]}.webp`)}" x="13" y="20" width="44" height="60" preserveAspectRatio="xMidYMid meet"/>`
+    : `<text x="35" y="66" text-anchor="middle" font-size="36" fill="${col}">${g}</text>`}
     <g transform="rotate(180 35 49)"><text x="7" y="20" font-family="Georgia, serif" font-weight="700" font-size="17" fill="${col}">${r}</text></g></svg>`;
 }
 
 export function chipSvg(value: number, color: string): string {
+  if (CHIP_ART.includes(value)) return `<span class="chip-art">${imgHtml(`chips/c${value}.webp`, 'chip-img')}<b>${value >= 1000 ? value / 1000 + 'K' : value}</b></span>`;
+  return chipDrawn(value, color);
+}
+const CHIP_ART = [10, 25, 50, 100, 250, 500, 1000];
+function chipDrawn(value: number, color: string): string {
   return `<svg viewBox="0 0 60 60" class="chip-svg"><circle cx="30" cy="30" r="28" fill="${color}" stroke="#fff" stroke-width="2"/>
     ${[0, 60, 120, 180, 240, 300].map(a => `<rect x="27" y="2" width="6" height="10" fill="#fff" transform="rotate(${a} 30 30)"/>`).join('')}
     <circle cx="30" cy="30" r="17" fill="none" stroke="#fff" stroke-dasharray="3 3"/>

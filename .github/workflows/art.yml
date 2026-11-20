@@ -1,0 +1,34 @@
+name: Fetch art
+
+# Generated artwork and audio live on the generators' CDNs. This job downloads what
+# tools/art.json lists, converts images to WebP at the listed size, and commits them.
+on:
+  push:
+    branches: [claude/project-thread-uflxfz]
+    paths: ['tools/art.json', 'tools/fetch-art.mjs']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: fetch-art
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --no-package-lock sharp@0.34.4
+      - run: node tools/fetch-art.mjs
+      - name: Commit the fetched files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/art tools/raw 2>/dev/null || git add public/art
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "Fetch generated art and audio"
+          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 5; done
+          exit 1

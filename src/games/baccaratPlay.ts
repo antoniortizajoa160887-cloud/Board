@@ -1,4 +1,5 @@
 import { sfx } from '../audio';
+import { say } from '../ui/assets';
 import { bacPayout, playCoup, total, type BacBet, type Coup } from '../core/baccarat';
 import { shuffledDeck, type Card } from '../core/cards';
 import { makeRng } from '../core/rng';
@@ -108,12 +109,13 @@ export const baccaratScreen: Screen = root => {
     const nat = coup.natural ? tr(' · natural', ' · natural') : '';
     resultBanner(result, `${who} ${total(coup.player)}–${total(coup.banker)}${nat}${net > 0 ? `  +${fmt(net)}` : net < 0 ? `  −${fmt(-net)}` : ''}`, net > 0 ? 'win' : net < 0 ? 'lose' : 'push');
     if (net > 0) { sfx(coup.winner === 'tie' ? 'bigwin' : 'win'); coinBurst(spots[coup.winner]); buzz(); } else if (net < 0) sfx('lose');
+    if (coup.winner === 'tie') say('tie', { interrupt: true });
     bets = {}; renderBets();
     busy = false; dealBtn.disabled = false;
   }
 
   const dealBtn = h('button.btn.primary', { onclick: () => void deal() }, tr('DEAL', 'REPARTIR'));
-  root.classList.add('table-game', 'felt');
+  root.classList.add('table-game', 'felt', 'baccarat');
   root.append(topBar('Baccarat'),
     h('div.table.bac-table', {},
       h('div.dealer-spot', {}, h('div.dealer-mini', { html: dealerSvg() }), roadEl),

@@ -1,4 +1,5 @@
 import { sfx } from '../audio';
+import { say } from '../ui/assets';
 import { betKey, colorOf, payout, WHEEL_ORDER, type BetKind } from '../core/roulette';
 import { makeRng, randInt } from '../core/rng';
 import { buzz } from '../platform';
@@ -135,6 +136,7 @@ export const rouletteScreen: Screen = root => {
     ballArm.style.transition = 'transform 5s cubic-bezier(.2,.65,.2,1)';
     ballArm.style.transform = `rotate(${ballEnd}deg)`;
     resultBanner(result, tr('No more bets', 'No va más'), 'info');
+    say('nomore', { interrupt: true });
     const ticks = window.setInterval(() => sfx('tick'), 120);
     await sleep(4200);
     clearInterval(ticks);
@@ -166,6 +168,7 @@ export const rouletteScreen: Screen = root => {
   const spinBtn = h('button.btn.primary.spin', { onclick: () => void spinWheel() }, tr('SPIN', 'GIRAR'));
   const rules = h('button.btn.small', { onclick: rouletteHowTo }, tr('How to play', 'Cómo jugar'));
 
+  window.setTimeout(() => say('bets'), 600);
   root.classList.add('roulette', 'felt');
   root.append(topBar(tr('Roulette', 'Ruleta')),
     h('div.wheel-zone', {}, h('div.pointer'), wheel), histEl, result,

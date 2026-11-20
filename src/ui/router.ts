@@ -1,3 +1,4 @@
+import { art } from './assets';
 import { h } from './dom';
 
 /** A screen draws itself into the app root and may return a cleanup function. */
@@ -14,6 +15,21 @@ function show(e: Entry) {
   const view = h('div.view');
   r.append(view);
   e.cleanup = e.screen(view) || undefined;
+  setScene(r, view);
+}
+
+/** The painted backdrop behind each screen, picked by the screen's class (first match wins). */
+const SCENES: [string, string][] = [
+  ['hall', 'bg/hall.webp'], ['lobby', 'bg/casino.webp'], ['slots', 'bg/slots.webp'], ['roulette', 'bg/roulette.webp'],
+  ['craps', 'bg/craps.webp'], ['holdem', 'bg/holdem.webp'], ['vpoker', 'bg/vpoker.webp'], ['baccarat', 'bg/baccarat.webp'],
+  ['blackjack', 'bg/felt.webp'], ['bingo', 'bg/bingo.webp'], ['keno', 'bg/keno.webp'], ['pokerbingo', 'bg/pokerbingo.webp'],
+  ['checkers', 'bg/gamesroom.webp'], ['four', 'bg/gamesroom.webp'], ['colors', 'bg/colors.webp'], ['tycoon', 'bg/tycoon.webp'],
+  ['zip-view', 'zip/bg-sunset.webp'],
+];
+function setScene(r: HTMLElement, view: HTMLElement) {
+  const hit = SCENES.find(([c]) => view.classList.contains(c));
+  r.style.setProperty('--scene', hit ? `url("${art(hit[1])}")` : 'none');
+  r.dataset.scene = hit ? hit[0] : '';
 }
 
 export function go(screen: Screen) {
