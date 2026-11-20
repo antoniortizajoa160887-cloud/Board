@@ -17,5 +17,9 @@
  "slots/bar.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045009_271285b4-be55-47fd-9538-3ef0ec68af4c.png\",\"w\":256}",
  "slots/jackpot.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045009_74a27e0b-fdc6-4855-a0af-68464c425bff.png\",\"w\":256}",
  "slots/seven.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045009_7c68be85-83f9-4d88-8e9c-045a8e470ec7.png\",\"w\":256}",
- "slots/wild.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045008_34066e2a-80f3-455d-9770-6b0db9300aa3.png\",\"w\":256}"
+ "slots/wild.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045008_34066e2a-80f3-455d-9770-6b0db9300aa3.png\",\"w\":256}",
+ "chars/ollie-cheer.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045128_4567a9f5-651f-4770-bbab-44dcf2aee2ee.png\",\"w\":512}",
+ "chars/ollie-deal.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045128_cc8432f1-3c41-46ad-91a4-d45180342319.png\",\"w\":512}",
+ "chars/ollie-shrug.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045128_a3079d49-dea2-486d-ad9c-b1f71e7ea4f7.png\",\"w\":512}",
+ "chars/ollie-wave.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045128_6768b9b9-a668-4dbc-8a61-3db397917521.png\",\"w\":512}"
 }
