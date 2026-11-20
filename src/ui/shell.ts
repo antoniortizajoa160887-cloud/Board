@@ -76,9 +76,15 @@ export function settingsDialog() {
     input.checked = s[key];
     return h('label.toggle', {}, h('span', {}, label), input);
   };
+  const volume = () => {
+    const input = h('input', { type: 'range', min: '0', max: '100', step: '5', value: String(Math.round((s.sfxVolume ?? 0.5) * 100)),
+      oninput: () => { s.sfxVolume = Number(input.value) / 100; applyVolumes(); },
+      onchange: () => { save(); sfx('chip'); } }) as HTMLInputElement;
+    return h('label.toggle.slider', {}, h('span', {}, tr('Effects volume', 'Volumen de efectos')), input);
+  };
   const body = h('div.settings', {},
     h('div.lang-row', {}, h('span', {}, tr('Language', 'Idioma')), h('div.seg', {}, ...(['en', 'es'] as Lang[]).map(l => h('button.seg-btn' + (s.lang === l ? '.on' : ''), { onclick: () => { if (s.lang === l) return; setLang(l); document.querySelectorAll('.dialog-scrim').forEach(d => d.remove()); refresh(); settingsDialog(); } }, l === 'en' ? 'English' : 'Español')))),
-    toggle(tr('Music', 'Música'), 'music'), toggle(tr('Sound effects', 'Efectos de sonido'), 'sound'), toggle(tr('Ollie\'s voice', 'Voz de Ollie'), 'voice'), toggle(tr('Vibration', 'Vibración'), 'vibration'),
+    toggle(tr('Music', 'Música'), 'music'), toggle(tr('Sound effects', 'Efectos de sonido'), 'sound'), volume(), toggle(tr('Ollie\'s voice', 'Voz de Ollie'), 'voice'), toggle(tr('Vibration', 'Vibración'), 'vibration'),
     h('div.settings-links', {},
       h('button.btn', { onclick: async () => {
         const r = await checkForUpdate(true);

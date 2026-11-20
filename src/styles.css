@@ -679,3 +679,51 @@ img.dealer.hopping { animation: hop .5s cubic-bezier(.3,1.6,.5,1), bob 3.4s .5s 
 .av-img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
 .zip-level { background-image: linear-gradient(180deg, transparent 30%, rgba(5,10,34,.75)), var(--pic), linear-gradient(135deg, var(--a), var(--b)); background-size: cover; background-position: center; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
 .zip-level.locked { filter: grayscale(.6) brightness(.7); }
+.toggle.slider input[type=range] { width: 50%; accent-color: #f5c542; }
+
+/* ---- Poker Bingo table ---- */
+.pb-table { width: min(100%, 520px); margin: 0 auto; display: flex; flex-direction: column; gap: 8px; padding: 8px; border-radius: 18px; background: radial-gradient(ellipse at 50% 0%, #136b48ee, #07301fee); border: 2px solid var(--gold); box-shadow: 0 0 18px #f5c54233, inset 0 0 30px #0007; }
+.pb-dealer-row { display: flex; align-items: center; gap: 10px; }
+img.pb-dealer { width: 76px; height: 76px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 4px 8px #0009); }
+.pb-deck { position: relative; width: 58px; height: 81px; flex-shrink: 0; perspective: 600px; }
+.pb-deck-back { position: absolute; inset: 0; transform: translate(-6px, 4px) rotate(-6deg); opacity: .9; }
+.pb-deck-back img, .pb-deck-back svg, .pb-flip-in img, .pb-flip-in svg { width: 100%; height: 100%; display: block; }
+.pb-flip { position: absolute; inset: 0; filter: drop-shadow(0 6px 10px #000a); }
+.pb-flip.turn .pb-flip-in { animation: pbFlip .45s cubic-bezier(.2,.8,.3,1.1); }
+@keyframes pbFlip { 0% { transform: translateX(-20px) rotateY(180deg) scale(.8); } 100% { transform: none; } }
+.pb-callbox { flex: 1; min-width: 0; }
+.pb-count { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.pb-calltext { font-family: Georgia, serif; font-weight: 900; font-size: 20px; color: var(--gold2); text-shadow: 0 2px 6px #000; line-height: 1.15; }
+.pb-pots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.pb-pot { position: relative; padding: 5px 3px 6px; border-radius: 10px; text-align: center; background: #0b1430cc; border: 1.5px solid #f5c54266; }
+.pb-pot-name { font-size: 10.5px; font-weight: 800; color: var(--muted); line-height: 1.1; min-height: 2.2em; display: grid; place-items: center; }
+.pb-pot-amt { font-weight: 900; color: var(--gold2); font-size: 14px; }
+.pb-pot.won { border-color: var(--gold); background: linear-gradient(#3b2a06cc, #1a1203cc); box-shadow: 0 0 10px #f5c54288; animation: pop .4s; }
+.pb-pot-who { display: flex; justify-content: center; gap: 2px; margin-top: 2px; }
+.pb-pot-face { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 1.5px solid var(--gold); background: #0b1430; }
+.pb-bots { display: flex; gap: 6px; justify-content: center; }
+.pb-bot { flex: 1; max-width: 140px; display: grid; grid-template-columns: 34px 1fr; grid-template-rows: auto auto auto; column-gap: 6px; align-items: center; padding: 4px 6px; border-radius: 10px; background: #0b1430aa; border: 1.5px solid var(--ring); }
+.pb-bot-img { grid-row: 1 / 4; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 2px solid var(--ring); background: #0b1430; }
+.pb-bot-name { font-weight: 800; font-size: 12px; }
+.pb-bot-boards { font-size: 10px; color: var(--muted); }
+.pb-bot-meter { display: flex; gap: 2px; }
+.pb-bot-meter i { width: 9px; height: 5px; border-radius: 2px; background: #ffffff22; }
+.pb-bot-meter i.on { background: var(--ring); box-shadow: 0 0 4px var(--ring); }
+.pb-hands { width: min(100%, 520px); margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+.pb-hand { display: grid; grid-template-columns: 30px 52px 1fr; grid-template-rows: auto auto; column-gap: 6px; align-items: center; padding: 4px 6px; border-radius: 10px; background: #0b1430cc; border: 1.5px solid transparent; }
+.pb-hand.best { border-color: var(--gold); box-shadow: 0 0 12px #f5c54288; background: linear-gradient(#3b2a06dd, #1a1203dd); }
+.pb-hand-face { grid-row: 1 / 3; width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
+.pb-hand-name { grid-row: 1 / 3; font-weight: 800; font-size: 12px; }
+.pb-hand-cards { display: flex; gap: 3px; }
+.pb-hand-card { width: 30px; }
+.pb-hand-card svg, .pb-hand-card img { width: 100%; height: auto; display: block; }
+.pb-hand-cat { font-size: 11px; font-weight: 800; color: var(--gold2); }
+.pb-setup { display: flex; flex-direction: column; gap: 8px; align-items: center; width: min(100%, 520px); margin: 0 auto; }
+.pb-set { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+.pb-picker { flex-direction: column; gap: 8px; }
+.pb-opp { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--muted); font-size: 13px; }
+.pb-opp-faces { display: inline-flex; }
+.pb-opp-face { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; margin-left: -6px; border: 1.5px solid #0b1430; }
+.pb-opp-face:first-child { margin-left: 0; }
+.pb-cost { font-size: 13px; color: var(--muted); font-weight: 700; }
+.pb-pick { min-width: 36px; height: 36px; font-size: 14px; }

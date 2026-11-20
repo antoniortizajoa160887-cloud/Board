@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Split one recorded take of 15 bingo calls into one file per number.
-Usage: split-calls.py raw.mp3 out_dir first_number   (fails unless exactly 15 spoken parts are found)"""
+Usage: split-calls.py raw.mp3 out_dir first_number [min_gap] [count=15]   (fails unless exactly count spoken parts are found)"""
 import re, subprocess, sys
 raw, out, first = sys.argv[1], sys.argv[2], int(sys.argv[3])
 min_gap = sys.argv[4] if len(sys.argv) > 4 else '0.22'
+count = int(sys.argv[5]) if len(sys.argv) > 5 else 15
 log = subprocess.run(['ffmpeg', '-hide_banner', '-i', raw, '-af', 'silencedetect=noise=-38dB:d=' + min_gap + '', '-f', 'null', '-'],
                      capture_output=True, text=True).stderr
 dur = float(re.search(r'Duration: (\d+):(\d+):([\d.]+)', log).groups()[2]) + 60 * int(re.search(r'Duration: (\d+):(\d+)', log).group(2))
@@ -18,8 +19,8 @@ for t, k in edges:
         cur = None
     elif k == 'e': cur = t
 if cur is not None and dur - cur > 0.15: parts.append((cur, dur))
-if len(parts) != 15:
-    sys.exit(f'{raw}: found {len(parts)} parts, expected 15: {parts}')
+if len(parts) != count:
+    sys.exit(f'{raw}: found {len(parts)} parts, expected {count}: {parts}')
 import os; os.makedirs(out, exist_ok=True)
 for i, (a, b) in enumerate(parts):
     a, b = max(0, a - 0.05), min(dur, b + 0.08)
