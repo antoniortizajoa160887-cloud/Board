@@ -9,6 +9,7 @@ import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
 import { topBar } from '../ui/shell';
 import { betStepper, cantAfford, resultBanner } from './kit';
+import { say } from '../ui/assets';
 import { tr } from '../i18n';
 import { howToPlay } from './howto';
 
@@ -38,7 +39,7 @@ export const blackjackScreen: Screen = root => {
   let phase: 'bet' | 'play' | 'done' = 'bet';
 
   const draw = (): Card => {
-    if (shoe.length < 52 * DECKS * 0.25) { shoe = shuffledDeck(rng, DECKS); }
+    if (shoe.length < 52 * DECKS * 0.25) { shoe = shuffledDeck(rng, DECKS); say('shuffle'); }
     return shoe.pop()!;
   };
 
@@ -185,12 +186,17 @@ export const blackjackScreen: Screen = root => {
     if (net > 0) { sfx(outcomes.includes('blackjack') ? 'bigwin' : 'win'); coinBurst(handsBox); buzz(); }
     else if (net < 0) sfx('lose');
     resultBanner(result, text, net > 0 ? 'win' : net < 0 ? 'lose' : 'push');
+    const dealerBust = handTotal(dealer).total > 21, playerBust = hands.every(hd => handTotal(hd.cards).total > 21);
+    if (outcomes.includes('blackjack')) say('blackjack', { interrupt: true });
+    else if (playerBust) say('bust', { interrupt: true });
+    else if (dealerBust && net > 0) say('dealerbust', { interrupt: true });
+    else if (net === 0) say('tie', { interrupt: true });
     render();
   }
 
   const rules = h('button.btn.small', { onclick: blackjackHowTo }, tr('How to play', 'Cómo jugar'));
 
-  root.classList.add('table-game', 'felt');
+  root.classList.add('table-game', 'felt', 'blackjack');
   root.append(topBar('Blackjack 21'),
     h('div.table', {},
       h('div.dealer-spot', {}, h('div.dealer-mini', { html: dealerSvg() }), h('div', {}, dealerRow, dealerTotal)),

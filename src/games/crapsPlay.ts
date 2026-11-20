@@ -1,4 +1,5 @@
 import { sfx } from '../audio';
+import { say } from '../ui/assets';
 import { roll, type CrapsBet, type CrapsState } from '../core/craps';
 import { makeRng, randInt } from '../core/rng';
 import { tr } from '../i18n';
@@ -91,7 +92,7 @@ export const crapsScreen: Screen = root => {
     busy = true; rollBtn.disabled = true;
     const before = onTable();
     const a = randInt(rng, 6) + 1, b = randInt(rng, 6) + 1;
-    sfx('dice');
+    sfx('dice'); say('dice');
     d1.classList.add('tumble'); d2.classList.add('tumble');
     sumEl.textContent = '';
     for (let i = 0; i < 9; i++) { d1.innerHTML = dieSvg(randInt(rng, 6) + 1); d2.innerHTML = dieSvg(randInt(rng, 6) + 1); await sleep(70); }
@@ -125,7 +126,7 @@ export const crapsScreen: Screen = root => {
   }
 
   const rollBtn = h('button.btn.primary', { onclick: () => void doRoll() }, tr('ROLL', 'TIRAR'));
-  root.classList.add('table-game', 'felt');
+  root.classList.add('table-game', 'felt', 'craps');
   root.append(topBar(tr('Craps', 'Dados (Craps)')),
     h('div.table.cr-table', {},
       h('div.cr-top', {}, puck, pointRow),

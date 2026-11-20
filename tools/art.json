@@ -41,6 +41,10 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_ce8b6b1a-8187-4699-9473-6fce0bfd4255.png",
   "w": 720
  },
+ "bg/colors.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_051048_bc24bec0-0e25-44b6-a864-e05144c4ac3b.png",
+  "w": 720
+ },
  "bg/craps.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_71a8967e-e54f-403d-9c58-36be8208eab7.png",
   "w": 720
@@ -77,6 +81,10 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045512_7db8e22f-b753-456b-8993-f8f6d1ab348c.png",
   "w": 720
  },
+ "bg/tycoon.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050921_c78ccf20-f759-4389-9550-7c40c4b7a147.png",
+  "w": 720
+ },
  "bg/vpoker.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_3e86654a-0a68-4a41-a5d9-ad47cc0a1c23.png",
   "w": 720
@@ -84,6 +92,18 @@
  "cards/back.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044823_6e9ec2f0-d57c-4127-9f8b-19aef01b7130.png",
   "w": 360
+ },
+ "cards/jack.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_051048_61a50bdc-e06d-4996-8af1-9f69628c994b.png",
+  "w": 200
+ },
+ "cards/king.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_051047_228db513-8fb8-4342-b9d0-79bf9fde3cd9.png",
+  "w": 200
+ },
+ "cards/queen.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_051047_73860072-d468-4279-99b5-9578f35331f1.png",
+  "w": 200
  },
  "chars/coral.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045323_fda0fbe1-20d3-40fc-bfe7-4da91f1b11b9.png",
@@ -120,6 +140,34 @@
  "chars/zip.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_3ec08c22-f270-4b3a-9877-7218ee406d6a.png",
   "w": 512
+ },
+ "chips/c10.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050741_20e6e53c-f9d8-4fe7-94ec-bb5a20573908.png",
+  "w": 128
+ },
+ "chips/c100.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050740_e503d7f9-89fe-4ac9-b73b-6b076da4c45a.png",
+  "w": 128
+ },
+ "chips/c1000.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050922_7d8bcc02-c34d-4e2e-b31e-8391d9d50a5c.png",
+  "w": 128
+ },
+ "chips/c25.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050740_5702bd14-d9b3-4815-a48b-f0292d256f08.png",
+  "w": 128
+ },
+ "chips/c250.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050921_612b0e7d-8795-414c-a08b-ddb7fba8cdf1.png",
+  "w": 128
+ },
+ "chips/c50.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050740_6b81c46b-5091-4662-b0b7-9d438ce6f87f.png",
+  "w": 128
+ },
+ "chips/c500.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050921_af6b852b-2730-4d80-95d4-3f186fcc6ab6.png",
+  "w": 128
  },
  "icons/arcade.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044824_341208f3-a8ff-413c-9c0a-8108815ee381.png",

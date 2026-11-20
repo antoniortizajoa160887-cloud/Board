@@ -3,7 +3,7 @@ import { START_CHIPS, type Wallet } from './core/wallet';
 import { DEFAULT_RULES, type Rules } from './core/colors';
 import type { Game as TycoonGame } from './core/tycoon';
 
-export interface Settings { sound: boolean; music: boolean; vibration: boolean; lang: 'en' | 'es' }
+export interface Settings { sound: boolean; music: boolean; vibration: boolean; voice: boolean; lang: 'en' | 'es' }
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
@@ -14,7 +14,7 @@ const KEY = 'lucky-lagoon-v1';
 function fresh(): Profile {
   return {
     wallet: { chips: START_CHIPS, lastDaily: '', lastRefill: 0, jackpot: JACKPOT_SEED, biggestWin: 0 },
-    settings: { sound: true, music: true, vibration: true, lang: typeof navigator !== 'undefined' && /^es/i.test(navigator.language) ? 'es' : 'en' },
+    settings: { sound: true, music: true, vibration: true, voice: true, lang: typeof navigator !== 'undefined' && /^es/i.test(navigator.language) ? 'es' : 'en' },
     stats: { played: {}, won: {} },
     colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
     zip: { stars: [] },

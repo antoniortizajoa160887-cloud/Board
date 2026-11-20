@@ -7,6 +7,7 @@ import { buzz } from '../platform';
 import { addChips, countPlay, profile } from '../save';
 import { cardSvg } from '../ui/art';
 import { BOTS } from '../ui/colorsArt';
+import { img, say } from '../ui/assets';
 import { coinBurst, fmt, h, sleep, toast } from '../ui/dom';
 import type { Screen } from '../ui/router';
 import { dialog, topBar } from '../ui/shell';
@@ -59,6 +60,7 @@ export const holdemScreen: Screen = root => {
 
   const cardsHtml = (cs: Card[], hidden: boolean, small = false) => cs.map(c => `<div class="he-card${small ? ' sm' : ''}">${cardSvg(c, hidden)}</div>`).join('');
 
+  let wasMyTurn = false;
   function render() {
     const hd = hand;
     seats.forEach((s, i) => {
@@ -68,7 +70,7 @@ export const holdemScreen: Screen = root => {
       const winner = hd?.results?.find(r => r.seat === i);
       el.className = 'he-seat s' + i + (hd && hd.toAct === i ? ' turn' : '') + (s.folded ? ' folded' : '') + (s.out ? ' out' : '') + (winner ? ' won' : '');
       el.replaceChildren(...[
-        h('div.he-avatar', { style: `--ring:${bot?.color ?? '#f5c542'}` }, bot?.face ?? '🦦'),
+        h('div.he-avatar', { style: `--ring:${bot?.color ?? '#f5c542'}` }, img(bot?.pic ?? 'chars/ollie.webp', 'av-img', bot?.name ?? 'Ollie')),
         h('div.he-name', {}, s.name, hd && hd.dealer === i ? h('span.he-dealer', {}, 'D') : ''),
         h('div.he-stack', {}, fmt(s.stack)),
         i > 0 && hd && s.hole.length ? h('div.he-hole', { html: cardsHtml(s.hole, !showCards, true) }) : null,
@@ -82,6 +84,8 @@ export const holdemScreen: Screen = root => {
     myHand.innerHTML = hd && me.hole.length ? cardsHtml(me.hole, false) : '';
     if (hd && me.hole.length && !me.folded) myHand.append(h('div.he-myname', {}, handName(best([...me.hole, ...hd.board]).score)));
     const myTurn = !!hd && hd.toAct === 0 && hd.street !== 'showdown';
+    if (myTurn && !wasMyTurn) say('turn');
+    wasMyTurn = myTurn;
     actBar.hidden = !myTurn;
     nextBar.hidden = !hd || hd.street !== 'showdown';
     if (myTurn) {
@@ -170,7 +174,7 @@ export const holdemScreen: Screen = root => {
     await loop();
   }
 
-  root.classList.add('table-game', 'felt');
+  root.classList.add('table-game', 'felt', 'holdem');
   root.append(topBar("Hold'em"),
     h('div.table.he-table', {}, ...seatEls.slice(1), h('div.he-center', {}, potEl, boardEl), seatEls[0]),
     myHand, result, actBar, nextBar,

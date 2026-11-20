@@ -7,7 +7,8 @@ import { addChips, countPlay, profile, save } from '../save';
 import { coinBurst, fmt, h } from '../ui/dom';
 import { back, go, type Screen } from '../ui/router';
 import { dialog, topBar } from '../ui/shell';
-import { drawBackground, drawEnemy, drawTiles, drawZip, pearl, THEMES } from './zipArt';
+import { drawBackground, drawEnemy, drawTiles, drawZip, pearl, preloadZip, THEMES } from './zipArt';
+import { say } from '../ui/assets';
 import { howToPlay } from './howto';
 
 const LEVEL_ES = ['Playa del Atardecer', 'Cala de Coral', 'Laguna de Medusas', 'Carrera del Arrecife', 'Muelles a la Luz de la Luna', 'Arrecife de Neón'];
@@ -59,6 +60,7 @@ export const zipScreen: Screen = root => {
     h('div.controls', {}, h('button.btn', { onclick: zipHowTo }, tr('How to play', 'Cómo jugar')))));
 };
 
+preloadZip();
 const SOUND: Partial<Record<GameEvent, Sfx>> = { jump: 'jump', jet: 'jet', pearl: 'pearl', stomp: 'stomp', hurt: 'hurt', fall: 'hurt', flag: 'win', bonus: 'chip', spring: 'spring' };
 
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; max: number; color: string; size: number; kind: 'dot' | 'pearl' | 'text'; text?: string }
@@ -234,7 +236,7 @@ function zipLevel(index: number): Screen {
         ]);
         coinBurst(d.querySelector('.big-win')!, 30);
       } else {
-        sfx('lose');
+        sfx('lose'); say('gameover', { interrupt: true });
         dialog(tr('Out of hearts', 'Sin corazones'), h('p', {}, tr('Zip needs a rest. Try again: the flags save your place inside the level.', 'Zip necesita descansar. Inténtalo otra vez: las banderas guardan tu lugar dentro del nivel.')), [
           { label: tr('How to play', 'Cómo jugar'), onclick: () => { zipHowTo(); restart(); } },
           { label: tr('Try again', 'Reintentar'), primary: true, onclick: restart },

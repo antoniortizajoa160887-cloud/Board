@@ -37,6 +37,7 @@ export function resultBanner(el: HTMLElement, text: string, kind: 'win' | 'lose'
   el.classList.remove('pop');
   void el.offsetWidth;
   el.classList.add('pop');
+  window.dispatchEvent(new CustomEvent('ll-result', { detail: kind }));
 }
 
 /** A row of chip buttons; the picked value is used when the player taps a betting spot. */

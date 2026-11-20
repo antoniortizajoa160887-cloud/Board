@@ -3,7 +3,8 @@
 Usage: split-calls.py raw.mp3 out_dir first_number   (fails unless exactly 15 spoken parts are found)"""
 import re, subprocess, sys
 raw, out, first = sys.argv[1], sys.argv[2], int(sys.argv[3])
-log = subprocess.run(['ffmpeg', '-hide_banner', '-i', raw, '-af', 'silencedetect=noise=-38dB:d=0.22', '-f', 'null', '-'],
+min_gap = sys.argv[4] if len(sys.argv) > 4 else '0.22'
+log = subprocess.run(['ffmpeg', '-hide_banner', '-i', raw, '-af', 'silencedetect=noise=-38dB:d=' + min_gap + '', '-f', 'null', '-'],
                      capture_output=True, text=True).stderr
 dur = float(re.search(r'Duration: (\d+):(\d+):([\d.]+)', log).groups()[2]) + 60 * int(re.search(r'Duration: (\d+):(\d+)', log).group(2))
 starts = [float(x) for x in re.findall(r'silence_start: ([\d.]+)', log)]
