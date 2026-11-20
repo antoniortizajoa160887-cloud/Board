@@ -9,5 +9,9 @@
  "icons/arcade.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044824_341208f3-a8ff-413c-9c0a-8108815ee381.png\",\"w\":384}",
  "icons/board.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044823_e77b3bb3-aee1-4a31-93a4-a4f890e106f0.png\",\"w\":384}",
  "icons/casino.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_b80baad6-b8df-4811-8a0b-813cd39d8f6c.png\",\"w\":384}",
- "ui/logo.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_93132b73-63bf-4a68-bee3-2411998595fa.png\",\"w\":640}"
+ "ui/logo.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_93132b73-63bf-4a68-bee3-2411998595fa.png\",\"w\":640}",
+ "slots/bell.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044910_47a2414d-6aca-41b2-8a55-4e4973cb0801.png\",\"w\":256}",
+ "slots/pearl.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044910_f8abc746-fdc6-46a6-acf7-b68578350238.png\",\"w\":256}",
+ "slots/shell.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044911_0cbf6542-2a8d-4a97-8e24-7682e08bd89b.png\",\"w\":256}",
+ "slots/star.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044910_0af345c8-889e-45dc-add2-3ec096174c75.png\",\"w\":256}"
 }
