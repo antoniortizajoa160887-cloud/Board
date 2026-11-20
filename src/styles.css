@@ -339,3 +339,49 @@ button:disabled { opacity: .45; cursor: default; }
   .zip-pad .zip-btn { pointer-events: auto; opacity: .75; width: 64px; height: 64px; }
   .zip-pad .zip-btn.jump { width: 84px; height: 84px; }
 }
+
+/* Baccarat */
+.bac-table { justify-content: space-between; }
+.bac-road { display: grid; grid-template-columns: repeat(12, 18px); grid-auto-rows: 18px; gap: 2px; padding: 4px; border-radius: 8px; background: #0008; min-height: 26px; }
+.bead { border-radius: 50%; font-size: 10px; font-weight: 900; display: grid; place-items: center; color: #fff; }
+.bead.player { background: #3561e0; } .bead.banker { background: #d42a2a; } .bead.tie { background: #0fa79a; }
+.bac-hands { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bac-hand { display: flex; flex-direction: column; align-items: center; }
+.bac-label { font-family: var(--deco); letter-spacing: 2px; color: var(--gold2); font-size: 13px; }
+.bac-hand .pcard-wrap { width: 54px; margin-left: -14px; }
+.bac-hand .pcard-wrap:first-child { margin-left: 0; }
+.bac-hand .pcard-wrap.third { transform: rotate(90deg) translateY(-6px); }
+.bac-hand .cards-row { min-height: 80px; align-items: center; }
+.bac-total { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 22px; background: #0008; border: 2px solid #ffffff33; }
+.bac-total:empty { visibility: hidden; }
+.bac-total.win { border-color: var(--gold); color: var(--gold2); box-shadow: 0 0 18px var(--gold); animation: pop .4s; }
+.bac-spots { display: grid; grid-template-columns: 1fr .8fr 1fr; gap: 8px; }
+.bac-spot { position: relative; display: flex; flex-direction: column; align-items: center; padding: 14px 4px; border-radius: 16px; border: 2px solid #ffffff55; background: #ffffff0c; font-weight: 900; }
+.bac-spot.player { border-color: #6d8fff; } .bac-spot.banker { border-color: #ff6b6b; } .bac-spot.tie { border-color: #2ef2d0; }
+.bac-spot:active { transform: scale(.97); }
+.bac-spot-pay { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+/* Craps */
+.cr-table { justify-content: space-between; border-radius: 24px; }
+.cr-top { display: flex; align-items: center; gap: 8px; }
+.cr-puck { width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 12px; background: #111; color: #fff; border: 3px solid #fff; transition: .3s; }
+.cr-puck.on { background: #fff; color: #111; box-shadow: 0 0 16px #fff; }
+.cr-points { flex: 1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.cr-pt { text-align: center; padding: 8px 0; border-radius: 10px; border: 1px solid #ffffff44; font-family: var(--deco); font-size: 13px; color: #fff; }
+.cr-pt.on { background: #fff; color: #0d3a4a; box-shadow: 0 0 16px #fff; }
+.cr-dice { display: flex; align-items: center; justify-content: center; gap: 16px; min-height: 92px; }
+.die { width: 72px; height: 72px; filter: drop-shadow(0 8px 10px #000a); }
+.die svg { width: 100%; height: 100%; }
+.die.tumble { animation: tumble .18s linear infinite; }
+.die.tumble + .die.tumble { animation-direction: reverse; }
+@keyframes tumble { 0% { transform: rotate(0) translateY(0); } 50% { transform: rotate(180deg) translateY(-14px); } 100% { transform: rotate(360deg) translateY(0); } }
+.cr-sum { font-family: var(--deco); font-size: 38px; color: var(--gold2); text-shadow: 0 0 14px var(--gold); min-width: 48px; text-align: center; }
+.cr-hist { display: flex; gap: 4px; justify-content: center; min-height: 24px; }
+.cr-h { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; font-weight: 800; background: #0008; }
+.cr-h.seven { background: #d42a2a; }
+.cr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cr-spot { position: relative; padding: 14px 4px; border-radius: 14px; border: 2px solid #ffffff55; background: #ffffff0c; font-weight: 900; font-size: 12px; color: #fff; }
+.cr-spot.field { grid-column: 1 / -1; border-color: var(--gold); color: var(--gold2); }
+.cr-spot.pass { grid-column: 1 / -1; border-color: #fff; font-size: 16px; letter-spacing: 2px; }
+.cr-spot.odds.off { opacity: .4; }
+.cr-spot.any7 { border-color: #ff6b6b; } .cr-spot.anyCraps { border-color: #b07bff; }

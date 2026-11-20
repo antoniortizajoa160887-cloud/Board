@@ -3,6 +3,7 @@ import { buzz } from '../platform';
 import { profile } from '../save';
 import { fmt, h, toast } from '../ui/dom';
 import { bonusDialog } from '../ui/shell';
+import { chipSvg, CHIP_COLORS } from '../ui/art';
 
 /** A − amount + stepper for bets. */
 export function betStepper(values: number[], start: number, label = 'Bet', onChange?: (v: number) => void, show: (v: number) => string = fmt) {
@@ -36,3 +37,19 @@ export function resultBanner(el: HTMLElement, text: string, kind: 'win' | 'lose'
   void el.offsetWidth;
   el.classList.add('pop');
 }
+
+/** A row of chip buttons; the picked value is used when the player taps a betting spot. */
+export function chipPicker(values: number[], start: number) {
+  let chip = start;
+  const el = h('div.chip-bar', {}, ...values.map(v => {
+    const b = h('button.chip-btn' + (v === chip ? '.on' : ''), { 'aria-label': `${v}`, html: chipSvg(v, CHIP_COLORS[v]), onclick: () => {
+      chip = v; sfx('chip');
+      el.querySelectorAll('.chip-btn').forEach(x => x.classList.toggle('on', x === b));
+    } });
+    return b;
+  }));
+  return { el, get: () => chip };
+}
+
+/** The small stack label shown on a betting spot. */
+export const stackLabel = (amt: number) => (amt >= 1000 ? `${+(amt / 1000).toFixed(1)}K` : String(amt));
