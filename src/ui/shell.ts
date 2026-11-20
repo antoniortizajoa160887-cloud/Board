@@ -4,7 +4,8 @@ import { addChips, onChips, profile, resetProfile, save } from '../save';
 import { APP_VERSION, checkForUpdate, RELEASE_PAGE } from '../update';
 import { openExternal } from '../platform';
 import { coinBurst, countUp, fmt, h, toast } from './dom';
-import { back } from './router';
+import { back, refresh } from './router';
+import { setLang, tr, type Lang } from '../i18n';
 
 /** The top bar every screen shares: back, title, chip balance, daily bonus, settings. */
 export function topBar(title: string, opts: { showBack?: boolean } = {}): HTMLElement {
@@ -15,10 +16,10 @@ export function topBar(title: string, opts: { showBack?: boolean } = {}): HTMLEl
     shown = profile.wallet.chips;
   });
   const bar = h('header.topbar', {},
-    opts.showBack !== false ? h('button.icon-btn.back', { 'aria-label': 'Back', onclick: () => { sfx('click'); back(); } }, '‹') : h('span.logo-dot', {}, '◆'),
+    opts.showBack !== false ? h('button.icon-btn.back', { 'aria-label': tr('Back', 'Atrás'), onclick: () => { sfx('click'); back(); } }, '‹') : h('span.logo-dot', {}, '◆'),
     h('div.title', {}, title),
-    h('button.chips-pill', { 'aria-label': 'Chips', onclick: () => bonusDialog() }, h('span.coin'), chips, dailyDot()),
-    h('button.icon-btn', { 'aria-label': 'Settings', onclick: () => settingsDialog() }, '⚙'),
+    h('button.chips-pill', { 'aria-label': tr('Chips', 'Fichas'), onclick: () => bonusDialog() }, h('span.coin'), chips, dailyDot()),
+    h('button.icon-btn', { 'aria-label': tr('Settings', 'Ajustes'), onclick: () => settingsDialog() }, '⚙'),
   );
   // Stop listening once the bar leaves the page.
   const mo = new MutationObserver(() => { if (!bar.isConnected) { off(); mo.disconnect(); } });
@@ -30,7 +31,7 @@ function dailyDot() {
   return canClaimDaily(profile.wallet) || (needsRefill(profile.wallet) && refillWaitMs(profile.wallet) === 0) ? h('span.dot') : null;
 }
 
-export function dialog(title: string, body: HTMLElement, buttons: { label: string; primary?: boolean; onclick?: () => void }[] = [{ label: 'Close' }]) {
+export function dialog(title: string, body: HTMLElement, buttons: { label: string; primary?: boolean; onclick?: () => void }[] = [{ label: tr('Close', 'Cerrar') }]) {
   const scrim = h('div.dialog-scrim', { onclick: (e: Event) => { if (e.target === scrim) scrim.remove(); } });
   const box = h('div.dialog', {}, h('h2', {}, title), body,
     h('div.dialog-btns', {}, ...buttons.map(b => h('button.btn' + (b.primary ? '.primary' : ''), { onclick: () => { sfx('click'); scrim.remove(); b.onclick?.(); } }, b.label))));
@@ -42,53 +43,54 @@ export function dialog(title: string, body: HTMLElement, buttons: { label: strin
 export function bonusDialog() {
   const w = profile.wallet;
   const body = h('div.bonus');
-  body.append(h('p', {}, 'Play chips only. They have no money value and can\'t be bought.'));
+  body.append(h('p', {}, tr('Play chips only. They have no money value and can\'t be bought.', 'Solo fichas de juego. No tienen valor en dinero y no se pueden comprar.')));
   const daily = canClaimDaily(w);
-  body.append(h('div.bonus-row', {}, h('span', {}, `Daily bonus: ${fmt(DAILY_BONUS)} chips`),
+  body.append(h('div.bonus-row', {}, h('span', {}, tr(`Daily bonus: ${fmt(DAILY_BONUS)} chips`, `Bono diario: ${fmt(DAILY_BONUS)} fichas`)),
     h('button.btn.primary', { disabled: !daily, onclick: (e: Event) => {
       w.lastDaily = today();
       addChips(DAILY_BONUS);
       sfx('bigwin');
       coinBurst(e.target as Element, 26);
       (e.target as HTMLButtonElement).disabled = true;
-      (e.target as HTMLButtonElement).textContent = 'Claimed';
-      toast(`+${fmt(DAILY_BONUS)} chips`, 'win');
-    } }, daily ? 'Claim' : 'Claimed')));
+      (e.target as HTMLButtonElement).textContent = tr('Claimed', 'Cobrado');
+      toast(tr(`+${fmt(DAILY_BONUS)} chips`, `+${fmt(DAILY_BONUS)} fichas`), 'win');
+    } }, daily ? tr('Claim', 'Cobrar') : tr('Claimed', 'Cobrado'))));
   const wait = refillWaitMs(w);
   const canRefill = needsRefill(w) && wait === 0;
-  body.append(h('div.bonus-row', {}, h('span', {}, `Lagoon refill: ${fmt(REFILL_CHIPS)} chips when you're under 100`),
+  body.append(h('div.bonus-row', {}, h('span', {}, tr(`Lagoon refill: ${fmt(REFILL_CHIPS)} chips when you're under 100`, `Recarga de la laguna: ${fmt(REFILL_CHIPS)} fichas cuando tienes menos de 100`)),
     h('button.btn', { disabled: !canRefill, onclick: (e: Event) => {
       w.lastRefill = Date.now();
       addChips(REFILL_CHIPS);
       sfx('win');
       coinBurst(e.target as Element);
       (e.target as HTMLButtonElement).disabled = true;
-    } }, canRefill ? 'Refill' : wait > 0 && needsRefill(w) ? `in ${Math.ceil(wait / 60000)} min` : 'Not needed')));
-  body.append(h('p.muted', {}, `Biggest win: ${fmt(w.biggestWin)} chips`));
-  dialog('Chips', body);
+    } }, canRefill ? tr('Refill', 'Recargar') : wait > 0 && needsRefill(w) ? tr(`in ${Math.ceil(wait / 60000)} min`, `en ${Math.ceil(wait / 60000)} min`) : tr('Not needed', 'No hace falta'))));
+  body.append(h('p.muted', {}, tr(`Biggest win: ${fmt(w.biggestWin)} chips`, `Mayor premio: ${fmt(w.biggestWin)} fichas`)));
+  dialog(tr('Chips', 'Fichas'), body);
 }
 
 export function settingsDialog() {
   const s = profile.settings;
-  const toggle = (label: string, key: keyof typeof s) => {
+  const toggle = (label: string, key: 'sound' | 'music' | 'vibration') => {
     const input = h('input', { type: 'checkbox', onchange: () => { s[key] = input.checked; save(); applyVolumes(); } }) as HTMLInputElement;
     input.checked = s[key];
     return h('label.toggle', {}, h('span', {}, label), input);
   };
   const body = h('div.settings', {},
-    toggle('Music', 'music'), toggle('Sound effects', 'sound'), toggle('Vibration', 'vibration'),
+    h('div.lang-row', {}, h('span', {}, tr('Language', 'Idioma')), h('div.seg', {}, ...(['en', 'es'] as Lang[]).map(l => h('button.seg-btn' + (s.lang === l ? '.on' : ''), { onclick: () => { if (s.lang === l) return; setLang(l); document.querySelectorAll('.dialog-scrim').forEach(d => d.remove()); refresh(); settingsDialog(); } }, l === 'en' ? 'English' : 'Español')))),
+    toggle(tr('Music', 'Música'), 'music'), toggle(tr('Sound effects', 'Efectos de sonido'), 'sound'), toggle(tr('Vibration', 'Vibración'), 'vibration'),
     h('div.settings-links', {},
       h('button.btn', { onclick: async () => {
         const r = await checkForUpdate(true);
-        toast(r === 'new' ? 'A new version is ready' : r === 'same' ? 'You have the newest version' : 'Couldn\'t check right now');
-      } }, 'Check for updates'),
-      h('button.btn', { onclick: () => openExternal(RELEASE_PAGE) }, 'Open the download page'),
+        toast(r === 'new' ? tr('A new version is ready', 'Hay una versión nueva') : r === 'same' ? tr('You have the newest version', 'Tienes la versión más nueva') : tr('Couldn\'t check right now', 'No se pudo comprobar ahora'));
+      } }, tr('Check for updates', 'Buscar actualizaciones')),
+      h('button.btn', { onclick: () => openExternal(RELEASE_PAGE) }, tr('Open the download page', 'Abrir la página de descarga')),
       h('button.btn.danger', { onclick: () => {
-        dialog('Start over?', h('p', {}, 'This resets your chips, jackpot and stats.'), [
-          { label: 'Cancel' },
-          { label: 'Start over', primary: true, onclick: () => { resetProfile(); toast('Fresh start'); } },
+        dialog(tr('Start over?', '¿Empezar de nuevo?'), h('p', {}, tr('This resets your chips, jackpot and stats.', 'Esto reinicia tus fichas, el premio mayor y las estadísticas.')), [
+          { label: tr('Cancel', 'Cancelar') },
+          { label: tr('Start over', 'Empezar de nuevo'), primary: true, onclick: () => { resetProfile(); toast(tr('Fresh start', 'Comienzo nuevo')); } },
         ]);
-      } }, 'Start over')),
-    h('p.muted', {}, `Lucky Lagoon ${APP_VERSION} · personal, non-commercial · play chips only`));
-  dialog('Settings', body);
+      } }, tr('Start over', 'Empezar de nuevo'))),
+    h('p.muted', {}, tr(`Lucky Lagoon ${APP_VERSION} · personal, non-commercial · play chips only`, `Lucky Lagoon ${APP_VERSION} · uso personal, no comercial · solo fichas de juego`)));
+  dialog(tr('Settings', 'Ajustes'), body);
 }

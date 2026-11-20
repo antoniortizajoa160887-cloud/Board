@@ -42,3 +42,11 @@ export function closeTopDialog(): boolean {
   if (d) { d.remove(); return true; }
   return false;
 }
+
+/** Draws the current screen again (after a language change). */
+export function refresh() {
+  const top = stack[stack.length - 1];
+  if (!top) return;
+  top.cleanup?.();
+  show(top);
+}

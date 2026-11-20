@@ -70,7 +70,7 @@ function noise(start: number, dur: number, gain = 0.2, freq = 3000) {
   src.start(start);
 }
 
-export type Sfx = 'chip' | 'card' | 'click' | 'reel' | 'stop' | 'win' | 'bigwin' | 'lose' | 'ball' | 'tick' | 'daub' | 'jackpot';
+export type Sfx = 'chip' | 'card' | 'click' | 'reel' | 'stop' | 'win' | 'bigwin' | 'lose' | 'ball' | 'tick' | 'daub' | 'jackpot' | 'jump' | 'jet' | 'pearl' | 'stomp' | 'hurt' | 'dice' | 'spring';
 
 export function sfx(name: Sfx) {
   const c = ensure();
@@ -89,6 +89,16 @@ export function sfx(name: Sfx) {
     case 'ball': tone(700, t, 0.25, { type: 'sine', gain: 0.25, glideTo: 1400 }); break;
     case 'daub': tone(520, t, 0.1, { type: 'sine', gain: 0.25, glideTo: 260 }); break;
     case 'lose': tone(330, t, 0.25, { type: 'triangle', gain: 0.18, glideTo: 220 }); break;
+    case 'jump': tone(380, t, 0.14, { type: 'square', gain: 0.07, glideTo: 760 }); break;
+    case 'jet': noise(t, 0.18, 0.18, 900); tone(500, t, 0.16, { type: 'sawtooth', gain: 0.05, glideTo: 1100 }); break;
+    case 'pearl':
+      tone(1568, t, 0.07, { type: 'triangle', gain: 0.16 });
+      tone(2093, t + 0.05, 0.12, { type: 'triangle', gain: 0.14 });
+      break;
+    case 'stomp': tone(240, t, 0.12, { type: 'square', gain: 0.12, glideTo: 80 }); noise(t, 0.06, 0.2, 600); break;
+    case 'hurt': tone(220, t, 0.3, { type: 'sawtooth', gain: 0.1, glideTo: 70 }); break;
+    case 'spring': tone(300, t, 0.3, { type: 'sine', gain: 0.25, glideTo: 1200 }); break;
+    case 'dice': for (let i = 0; i < 6; i++) noise(t + i * 0.06, 0.04, 0.25, 1800 + i * 200); break;
     case 'win':
       [72, 76, 79, 84].forEach((n, i) => tone(midi(n), t + i * 0.08, 0.3, { type: 'triangle', gain: 0.22 }));
       break;

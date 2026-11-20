@@ -2,20 +2,21 @@ import { JACKPOT_SEED } from './core/slots';
 import { START_CHIPS, type Wallet } from './core/wallet';
 import { DEFAULT_RULES, type Rules } from './core/colors';
 
-export interface Settings { sound: boolean; music: boolean; vibration: boolean }
+export interface Settings { sound: boolean; music: boolean; vibration: boolean; lang: 'en' | 'es' }
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
-export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number } }
+export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] } }
 
 const KEY = 'lucky-lagoon-v1';
 
 function fresh(): Profile {
   return {
     wallet: { chips: START_CHIPS, lastDaily: '', lastRefill: 0, jackpot: JACKPOT_SEED, biggestWin: 0 },
-    settings: { sound: true, music: true, vibration: true },
+    settings: { sound: true, music: true, vibration: true, lang: typeof navigator !== 'undefined' && /^es/i.test(navigator.language) ? 'es' : 'en' },
     stats: { played: {}, won: {} },
     colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
+    zip: { stars: [] },
   };
 }
 
@@ -30,6 +31,7 @@ function load(): Profile {
       settings: { ...base.settings, ...p.settings },
       stats: { played: { ...p.stats?.played }, won: { ...p.stats?.won } },
       colors: { rules: { ...base.colors.rules, ...p.colors?.rules }, opponents: p.colors?.opponents ?? base.colors.opponents },
+      zip: { stars: Array.isArray(p.zip?.stars) ? p.zip!.stars : [] },
     };
   } catch {
     return base;

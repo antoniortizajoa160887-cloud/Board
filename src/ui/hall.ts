@@ -10,6 +10,7 @@ import { rouletteScreen } from '../games/roulettePlay';
 import { videoPokerScreen } from '../games/videoPokerPlay';
 import { bingoScreen } from '../games/bingoPlay';
 import { colorsScreen } from '../games/colorsPlay';
+import { zipScreen } from '../games/zipPlay';
 
 interface Tile { id: string; name: string; sub: string; icon: string; screen?: Screen }
 
@@ -78,7 +79,7 @@ export const casinoScreen: Screen = root => {
 
 export const arcadeScreen: Screen = root => {
   root.append(topBar('Arcade'), h('div.scroll', {},
-    section('Platformers', tile({ id: 'zip', name: 'Zip', sub: 'A speedy otter platformer', icon: ICONS.zip }))));
+    section('Platformers', tile({ id: 'zip', name: 'Zip', sub: 'A speedy otter platformer', icon: ICONS.zip, screen: zipScreen }))));
 };
 
 export const boardScreen: Screen = root => {
@@ -87,7 +88,7 @@ export const boardScreen: Screen = root => {
     section('Card games', tile({ id: 'crazycolors', name: 'Crazy Colors', sub: 'Match colors, with house rules', icon: ICONS.cards, screen: colorsScreen }))));
 };
 
-const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors' };
+const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors', zip: 'Zip' };
 
 export const statsScreen: Screen = root => {
   const w = profile.wallet;

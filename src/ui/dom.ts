@@ -1,3 +1,4 @@
+import { locale } from '../i18n';
 type Attrs = Record<string, string | number | boolean | ((e: Event) => void) | undefined>;
 
 /** Tiny element helper: h('div.card#id', {onclick}, children...) */
@@ -19,7 +20,7 @@ export function h<T extends HTMLElement = HTMLButtonElement>(tag: string, attrs:
   return el as unknown as T;
 }
 
-export const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
+export const fmt = (n: number) => Math.round(n).toLocaleString(locale());
 
 export const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
 
