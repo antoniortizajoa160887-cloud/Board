@@ -385,3 +385,56 @@ button:disabled { opacity: .45; cursor: default; }
 .cr-spot.pass { grid-column: 1 / -1; border-color: #fff; font-size: 16px; letter-spacing: 2px; }
 .cr-spot.odds.off { opacity: .4; }
 .cr-spot.any7 { border-color: #ff6b6b; } .cr-spot.anyCraps { border-color: #b07bff; }
+
+/* Hold'em */
+.felt .table.he-table { display: grid; grid-template-columns: 1fr 1.6fr 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: ". s2 ." "s1 c s3" ". s0 ."; align-items: center; justify-items: center; border-radius: 140px; padding: 14px 8px; gap: 4px; }
+.he-seat { position: relative; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px; border-radius: 14px; border: 2px solid transparent; min-width: 76px; transition: .2s; }
+.he-seat.s0 { grid-area: s0; } .he-seat.s1 { grid-area: s1; } .he-seat.s2 { grid-area: s2; } .he-seat.s3 { grid-area: s3; }
+.he-seat.turn { border-color: var(--gold); box-shadow: 0 0 16px #f5c54288; }
+.he-seat.folded { opacity: .45; }
+.he-seat.won { border-color: #2ef2d0; box-shadow: 0 0 20px #2ef2d088; }
+.he-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; background: #0b1030; border: 3px solid var(--ring); box-shadow: 0 0 8px var(--ring); }
+.he-seat.turn .he-avatar { animation: bob 1s ease-in-out infinite; }
+.he-name { font-weight: 800; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+.he-dealer { width: 16px; height: 16px; border-radius: 50%; background: #fff; color: #111; font-size: 10px; display: grid; place-items: center; font-weight: 900; }
+.he-stack { font-size: 12px; color: var(--gold2); font-weight: 800; }
+.he-hole { display: flex; }
+.he-card { width: 46px; filter: drop-shadow(0 3px 4px #0008); }
+.he-card.sm { width: 28px; margin-left: -8px; }
+.he-card.sm:first-child { margin-left: 0; }
+.he-card svg { width: 100%; display: block; }
+.he-card.ghost { aspect-ratio: 5 / 7; border-radius: 6px; border: 1px dashed #ffffff33; }
+.he-bet { position: absolute; bottom: -12px; padding: 1px 8px; border-radius: 10px; background: var(--gold); color: #2a1600; font-weight: 900; font-size: 11px; }
+.he-say { position: absolute; top: -12px; padding: 2px 8px; border-radius: 10px; background: #fff; color: #111; font-size: 11px; font-weight: 800; white-space: nowrap; animation: pop .25s; z-index: 2; }
+.he-win { position: absolute; bottom: -14px; color: #2ef2d0; font-weight: 900; text-shadow: 0 0 8px #2ef2d0; animation: pop .4s; }
+.he-center { grid-area: c; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.he-pot { font-weight: 900; color: var(--gold2); text-shadow: 0 0 10px var(--gold); }
+.he-board { display: flex; gap: 3px; }
+.he-board .he-card { width: 34px; animation: dealIn .35s; }
+.he-board .he-card.ghost { animation: none; }
+.he-myhand { display: flex; justify-content: center; align-items: center; gap: 6px; min-height: 72px; }
+.he-myhand .he-card { width: 52px; }
+.he-myname { font-weight: 900; color: var(--gold2); margin-left: 6px; }
+.he-actions { display: flex; flex-direction: column; gap: 6px; }
+.he-actions[hidden] { display: none; }
+.he-raise { display: flex; gap: 8px; align-items: center; }
+.he-slider { flex: 1; accent-color: var(--gold); }
+
+/* Keno */
+.keno-top { display: flex; gap: 10px; align-items: stretch; }
+.keno-left { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-width: 96px; }
+.keno-ball { width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; font-family: var(--deco); font-size: 28px; color: #2a1600; background: radial-gradient(circle at 35% 30%, #fff, var(--gold2) 45%, var(--gold3)); box-shadow: 0 0 18px #f5c54288; }
+.keno-ball:empty { opacity: .3; }
+.keno-ball.roll { animation: ballRoll .3s ease-out; }
+@keyframes ballRoll { from { transform: translateX(-60px) rotate(-180deg); opacity: 0; } }
+.keno-hits { font-weight: 900; color: var(--gold2); min-height: 20px; }
+.keno-pays { flex: 1; padding: 8px 12px; border-radius: 14px; border: 1px solid var(--gold); background: #120a2e; font-size: 13px; min-height: 96px; }
+.keno-pays-title { font-family: var(--deco); color: var(--gold2); letter-spacing: 1px; margin-bottom: 4px; }
+.keno-pay-row { display: flex; justify-content: space-between; color: var(--muted); padding: 1px 4px; border-radius: 6px; }
+.keno-pay-row.on { background: var(--gold); color: #2a1600; }
+.keno-board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+.keno-cell { aspect-ratio: 1; border-radius: 8px; border: 1px solid #ffffff22; background: #ffffff0a; font-weight: 800; font-size: 13px; padding: 0; transition: background .2s; }
+.keno-cell.picked { background: #2a3a8a; border-color: #8aa2ff; color: #fff; }
+.keno-cell.drawn { background: #5a1a3a; color: #ffb3c8; }
+.keno-cell.hit { background: radial-gradient(circle at 35% 30%, #fff, var(--gold2) 50%, var(--gold3)); color: #2a1600; box-shadow: 0 0 12px var(--gold); animation: pop .3s; }
+.keno-qp { gap: 6px; }

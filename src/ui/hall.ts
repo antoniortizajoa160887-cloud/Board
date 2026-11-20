@@ -13,6 +13,8 @@ import { colorsScreen } from '../games/colorsPlay';
 import { zipScreen } from '../games/zipPlay';
 import { baccaratScreen } from '../games/baccaratPlay';
 import { crapsScreen } from '../games/crapsPlay';
+import { holdemScreen } from '../games/holdemPlay';
+import { kenoScreen } from '../games/kenoPlay';
 
 interface Tile { id: string; name: string; sub: string; icon: string; screen?: Screen }
 
@@ -71,10 +73,10 @@ export const casinoScreen: Screen = root => {
         tile({ id: 'craps', name: 'Craps', sub: 'Roll the dice', icon: ICONS.dice, screen: crapsScreen })),
       section('Poker',
         tile({ id: 'videopoker', name: 'Video Poker', sub: 'Jacks or better', icon: ICONS.poker, screen: videoPokerScreen }),
-        tile({ id: 'holdem', name: "Hold'em", sub: '', icon: ICONS.poker })),
+        tile({ id: 'holdem', name: "Hold'em", sub: 'Texas poker vs 3 players', icon: ICONS.poker, screen: holdemScreen })),
       section('Bingo & Keno',
         tile({ id: 'bingo', name: 'Bingo', sub: 'Up to 4 cards', icon: ICONS.bingo, screen: bingoScreen }),
-        tile({ id: 'keno', name: 'Keno', sub: '', icon: ICONS.keno }))),
+        tile({ id: 'keno', name: 'Keno', sub: 'Pick up to 10 numbers', icon: ICONS.keno, screen: kenoScreen }))),
   );
   return () => clearInterval(timer);
 };
@@ -90,7 +92,7 @@ export const boardScreen: Screen = root => {
     section('Card games', tile({ id: 'crazycolors', name: 'Crazy Colors', sub: 'Match colors, with house rules', icon: ICONS.cards, screen: colorsScreen }))));
 };
 
-const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors', zip: 'Zip', baccarat: 'Baccarat', craps: 'Craps' };
+const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors', zip: 'Zip', baccarat: 'Baccarat', craps: 'Craps', holdem: "Hold'em", keno: 'Keno' };
 
 export const statsScreen: Screen = root => {
   const w = profile.wallet;
