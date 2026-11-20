@@ -17,6 +17,7 @@ import { crapsScreen } from '../games/crapsPlay';
 import { holdemScreen } from '../games/holdemPlay';
 import { kenoScreen } from '../games/kenoPlay';
 import { tycoonScreen } from '../games/tycoonPlay';
+import { pokerBingoScreen } from '../games/pokerBingoPlay';
 import { checkersScreen } from '../games/checkersPlay';
 import { fourScreen } from '../games/fourPlay';
 
@@ -80,7 +81,8 @@ export const casinoScreen: Screen = root => {
         tile({ id: 'holdem', name: "Hold'em", sub: tr('Texas poker vs 3 players', 'Póquer Texas contra 3 jugadores'), icon: ICONS.poker, screen: holdemScreen })),
       section(tr('Bingo & Keno', 'Bingo y Keno'),
         tile({ id: 'bingo', name: 'Bingo', sub: tr('Up to 4 cards', 'Hasta 4 cartones'), icon: ICONS.bingo, screen: bingoScreen }),
-        tile({ id: 'keno', name: 'Keno', sub: tr('Pick up to 10 numbers', 'Elige hasta 10 números'), icon: ICONS.keno, screen: kenoScreen }))),
+        tile({ id: 'keno', name: 'Keno', sub: tr('Pick up to 10 numbers', 'Elige hasta 10 números'), icon: ICONS.keno, screen: kenoScreen }),
+        tile({ id: 'pokerbingo', name: tr('Poker Bingo', 'Bingo Póquer'), sub: tr('Bingo with playing cards', 'Bingo con cartas de póquer'), icon: ICONS.cards, screen: pokerBingoScreen }))),
   );
   return () => clearInterval(timer);
 };
@@ -98,7 +100,7 @@ export const boardScreen: Screen = root => {
     section(tr('Card games', 'Juegos de cartas'), tile({ id: 'crazycolors', name: tr('Crazy Colors', 'Colores Locos'), sub: tr('Match colors, with house rules', 'Combina colores, con reglas de la casa'), icon: ICONS.cards, screen: colorsScreen }))));
 };
 
-const NAMES = (): Record<string, string> => ({ slots: tr('Lagoon Slots', 'Tragamonedas Laguna'), blackjack: 'Blackjack 21', roulette: tr('Roulette', 'Ruleta'), videopoker: tr('Video Poker', 'Video Póquer'), bingo: 'Bingo', colors: tr('Crazy Colors', 'Colores Locos'), zip: 'Zip', baccarat: 'Baccarat', craps: tr('Craps', 'Dados'), holdem: "Hold'em", keno: 'Keno', tycoon: tr('Harbor Tycoon', 'Magnate del Puerto'), checkers: tr('Checkers', 'Damas'), four: tr('Four in a Row', 'Cuatro en Línea') });
+const NAMES = (): Record<string, string> => ({ slots: tr('Lagoon Slots', 'Tragamonedas Laguna'), blackjack: 'Blackjack 21', roulette: tr('Roulette', 'Ruleta'), videopoker: tr('Video Poker', 'Video Póquer'), bingo: 'Bingo', colors: tr('Crazy Colors', 'Colores Locos'), zip: 'Zip', baccarat: 'Baccarat', craps: tr('Craps', 'Dados'), holdem: "Hold'em", keno: 'Keno', tycoon: tr('Harbor Tycoon', 'Magnate del Puerto'), checkers: tr('Checkers', 'Damas'), four: tr('Four in a Row', 'Cuatro en Línea'), pokerbingo: tr('Poker Bingo', 'Bingo Póquer') });
 
 export const statsScreen: Screen = root => {
   const w = profile.wallet;
