@@ -1,4 +1,7 @@
 {
+ "../../tools/raw/bingo-en-b.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/wcqK4zSrCG0SkYUTLcYI/gVtgxGdnsXCiMEUlEvyG/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=xP29-ue56__2LDpf0c__PQMrwxo="
+ },
  "bg/bingo.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045513_3bdf77ea-1307-4831-8c65-6be6268827de.png",
   "w": 720
@@ -216,6 +219,22 @@
  },
  "voice/es/win.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/kdksRcqkqjEaoqyf84GD/ZxffgywYEt4M0U5ZdDpP/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=Yk_5bVpy4Sn7GfiW8R_EIpdLnWk="
+ },
+ "zip/bg-day.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045827_f390e00f-eac6-4ecb-b732-acc90c73cd2f.png",
+  "w": 960
+ },
+ "zip/bg-reef.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045827_b2d3e871-33ab-4c40-85bc-378dadf59062.png",
+  "w": 960
+ },
+ "zip/bg-sunset.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045827_4d9e67e2-458f-4ea0-989e-812c005b9036.png",
+  "w": 960
+ },
+ "zip/bg-twilight.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045827_9c0f4e52-0aae-4fd9-b335-e896d25fbb6e.png",
+  "w": 960
  },
  "zip/crab.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045322_0fa59704-cb45-4242-a261-95635e75e9ba.png",
