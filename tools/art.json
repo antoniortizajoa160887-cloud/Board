@@ -29,6 +29,10 @@
  "../../tools/raw/bingo-es-o.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/f5q9thTfWM7Cjrq3Jxkn/vQ6OlAclWxS7YOutRR6Z/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=rNxgUQZcgxvB_KZpiKHUE_HieI4="
  },
+ "bg/baccarat.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050635_66d4ccac-658c-4518-9762-1bbfc5ae0426.png",
+  "w": 720
+ },
  "bg/bingo.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045513_3bdf77ea-1307-4831-8c65-6be6268827de.png",
   "w": 720
@@ -37,16 +41,44 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_ce8b6b1a-8187-4699-9473-6fce0bfd4255.png",
   "w": 720
  },
+ "bg/craps.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_71a8967e-e54f-403d-9c58-36be8208eab7.png",
+  "w": 720
+ },
  "bg/felt.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_1ec530cb-0c96-425f-b79e-70ab5fd58199.png",
+  "w": 720
+ },
+ "bg/gamesroom.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050636_9c7930be-2fb3-45ca-a433-ebe9b0fb97ea.png",
   "w": 720
  },
  "bg/hall.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_ebb34289-6d63-4447-b13c-7343b4a867a0.png",
   "w": 720
  },
+ "bg/holdem.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_d70364b3-e634-4093-9adb-6fc35e72a2e0.png",
+  "w": 720
+ },
+ "bg/keno.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050636_aa9b7709-4ac4-4bf1-9dd2-964cafcea34f.png",
+  "w": 720
+ },
+ "bg/pokerbingo.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050637_fd3c891d-8012-4ea7-80e0-9b0b741d8459.png",
+  "w": 720
+ },
+ "bg/roulette.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_ce3b87d1-09b8-4f00-bb9d-1e2b706d363f.png",
+  "w": 720
+ },
  "bg/slots.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045512_7db8e22f-b753-456b-8993-f8f6d1ab348c.png",
+  "w": 720
+ },
+ "bg/vpoker.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050503_3e86654a-0a68-4a41-a5d9-ad47cc0a1c23.png",
   "w": 720
  },
  "cards/back.webp": {
