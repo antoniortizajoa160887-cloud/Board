@@ -1,4 +1,8 @@
 {
+ "bg/bingo.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045513_3bdf77ea-1307-4831-8c65-6be6268827de.png",
+  "w": 720
+ },
  "bg/casino.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_ce8b6b1a-8187-4699-9473-6fce0bfd4255.png",
   "w": 720
@@ -11,12 +15,20 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_ebb34289-6d63-4447-b13c-7343b4a867a0.png",
   "w": 720
  },
+ "bg/slots.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045512_7db8e22f-b753-456b-8993-f8f6d1ab348c.png",
+  "w": 720
+ },
  "cards/back.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044823_6e9ec2f0-d57c-4127-9f8b-19aef01b7130.png",
   "w": 360
  },
  "chars/coral.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045323_fda0fbe1-20d3-40fc-bfe7-4da91f1b11b9.png",
+  "w": 256
+ },
+ "chars/moe.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045512_bf527c5f-95b9-44b1-872b-6cfd97e60aa6.png",
   "w": 256
  },
  "chars/ollie-cheer.webp": {
@@ -62,6 +74,10 @@
  "icons/stats.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_72834a9b-3a57-4f36-af1a-5507189ef803.png",
   "w": 384
+ },
+ "roulette/wheel.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045513_9146f119-88f5-44ed-b41f-e49edf196785.png",
+  "w": 512
  },
  "slots/bar.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045009_271285b4-be55-47fd-9538-3ef0ec68af4c.png",
@@ -117,8 +133,17 @@
  "voice/en/dealerbust.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/zkPv65yXCoMakxWHE2EW/lzucxLkVpfpVamHxwGOq/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=Mpb-uuoqQqvwHf2D27yMu7pTK1E="
  },
+ "voice/en/dice.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/uF0GYuPwl4H4LbiAIY95/YXiL9GaNPFolGl5wtKPE/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=MFymw_r-zGFuVEqs4qK3FBphBM8="
+ },
+ "voice/en/gameover.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/w2FZNK8cB6TOn1RXP1YK/kIIrffiupnJ7FnBN48iU/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=lzmME4idfRjjKz8j0X0OTr8gxKw="
+ },
  "voice/en/jackpot.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/wLdFBGqpvoyNTcnQjQ4Q/mtJrt8gIgkd1KsnWXvT6/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=mcoJJanswooN3ZaLTjQxNQWWkwI="
+ },
+ "voice/en/level.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/lIjkt1kIkFQl5grAWOMo/OFAFCGCXw49OEhQP02ZE/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=1UzsD_BqLZLnw4_iyM4yyvKBD18="
  },
  "voice/en/lose.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/272iBrQ1EdYx2IGdrJnv/BXWk1gyuqaFpjpFcDI1B/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=UaHS184XbNGzsaByVw3JWHC2aUc="
@@ -132,14 +157,39 @@
  "voice/en/tie.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/ZfDdIzfqJ4KUs3nEpHiN/pId3EolSkTUXtLuomGl4/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=cslfO_rjKDcgVqZBbhVQDHHv8to="
  },
+ "voice/en/turn.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/FvupRM69TaR02mcIKPyE/aYLFXHswpxR2lGDdZrpd/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=G-1ZblezPDPvgkX8Hhb2GRXyQZ4="
+ },
  "voice/en/welcome.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/PkEvbXa3IbHiCYw5wYeW/8jiJ4WGnVm02P67VKNeH/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=hnwrrG5m8lv-DpJx4J0dMqz0bOg="
  },
  "voice/en/win.mp3": {
   "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/93QEL5Pvys7GXCpaqSbl/o4yyt5x7iyHQiweUZXuq/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=rNPjhXxx20p3GvCwq1gelUCs46c="
  },
+ "voice/es/bets.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/Lssa4CJyEYn0OfpdJKbJ/RVlVtkhRZVhhOro9SACB/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=a3kspkekFmLe3WKj36LpMgOlMS0="
+ },
+ "voice/es/blackjack.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/zdjDliHUVrnNipbg7kM3/zlfvbuG1bVW1JXGOMJVB/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=-TRrH4_iZ9GMlU2TvABXSC9ePaU="
+ },
+ "voice/es/jackpot.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/MW15wgMih7I0vvY8YdSX/fkdMC3dzSI6pwPzAKxL4/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=YbKFAhOPFs4DdopcHn5mgLIejc8="
+ },
+ "voice/es/nomore.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/J7lIIKYmF0eLrm7utlk7/YLoxzsVTjFmZLFEuxHqw/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=bWljy5LYWWLymKolI_8NdoCRiDo="
+ },
+ "voice/es/welcome.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/zp4eEKdGIHCeUMWOpRgU/Ol1W5GCc6QCgfP9cB6UJ/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=G8njiZAXzQ_6j1gV8aVYwcLOEq8="
+ },
+ "voice/es/win.mp3": {
+  "url": "https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/kdksRcqkqjEaoqyf84GD/ZxffgywYEt4M0U5ZdDpP/content.mp3?Expires=1795158000&KeyName=assets-cdn-key-1&Signature=Yk_5bVpy4Sn7GfiW8R_EIpdLnWk="
+ },
  "zip/crab.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045322_0fa59704-cb45-4242-a261-95635e75e9ba.png",
+  "w": 192
+ },
+ "zip/flag.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045729_98f583c7-7e0c-49cc-8c53-107f74b79090.png",
   "w": 192
  },
  "zip/hurt.webp": {
@@ -158,12 +208,24 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045224_c70f68c2-470e-461e-8bf1-ba64c0441fbf.png",
   "w": 256
  },
+ "zip/platform.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045729_00f8b9ef-6d4b-449e-bffc-87c6172f85b5.png",
+  "w": 512
+ },
  "zip/run1.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_3ec08c22-f270-4b3a-9877-7218ee406d6a.png",
   "w": 256
  },
  "zip/run2.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045224_bf2d99d7-ab0a-437a-af72-4bd3b626ea3f.png",
+  "w": 256
+ },
+ "zip/spring.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045729_edad40af-a7d0-47ea-887d-60e0d73e03b9.png",
+  "w": 160
+ },
+ "zip/win.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045730_b90e5700-2b8b-4932-a610-5765979b090f.png",
   "w": 256
  }
 }
