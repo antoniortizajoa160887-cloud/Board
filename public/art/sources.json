@@ -90,5 +90,13 @@
  "../../tools/raw/bingo-es-g.mp3": "{\"url\":\"https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/3wvDNGvpdrFLWLenYiTV/C2DFSm1k9FLJGKpsIPEX/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=PiZayVnT8MDP2m9u9lQM_VdlqmM=\"}",
  "../../tools/raw/bingo-es-i.mp3": "{\"url\":\"https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/mjCtrIeCONpEnYvQcDMN/jwHMo6lnqHatGb2RyJiO/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=vzdfGyG3CaXKmNGBlX80D7MIxaY=\"}",
  "../../tools/raw/bingo-es-n.mp3": "{\"url\":\"https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/RqM2ZPzvJIqM0xtvQhYp/QgmeFi76FYHFVbh9KOMo/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=On_tn2rKOg-McObV-Fz3Gq3CGhE=\"}",
- "../../tools/raw/bingo-es-o.mp3": "{\"url\":\"https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/f5q9thTfWM7Cjrq3Jxkn/vQ6OlAclWxS7YOutRR6Z/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=rNxgUQZcgxvB_KZpiKHUE_HieI4=\"}"
+ "../../tools/raw/bingo-es-o.mp3": "{\"url\":\"https://elevenlabsusercontent.com/database/workspace/2243881f3e6e4373a04735e91aac6cb8/content_generation/f5q9thTfWM7Cjrq3Jxkn/vQ6OlAclWxS7YOutRR6Z/content.mp3?Expires=1795161600&KeyName=assets-cdn-key-1&Signature=rNxgUQZcgxvB_KZpiKHUE_HieI4=\"}",
+ "icons/g-baccarat.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_90d18feb-5e17-4b89-94e1-899192d168b1.png\",\"w\":192}",
+ "icons/g-bingo.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050228_17af2b8e-a8c8-4481-86e8-adcc1cc23323.png\",\"w\":192}",
+ "icons/g-craps.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_a2b74102-5dc0-415e-9a70-a2cd87f58702.png\",\"w\":192}",
+ "icons/g-holdem.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050229_610ffecb-6e6c-43ef-a29f-84436272c7d7.png\",\"w\":192}",
+ "icons/g-keno.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050228_3678eb60-5242-46d1-9eff-98033228d285.png\",\"w\":192}",
+ "icons/g-pokerbingo.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050229_1d374651-e3f1-48b8-b81a-4905fe4a4bc9.png\",\"w\":192}",
+ "icons/g-roulette.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_894ef153-e831-4bc9-8b18-fc91c7cb2027.png\",\"w\":192}",
+ "icons/g-videopoker.webp": "{\"url\":\"https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_af92c69a-7211-4c19-bb7d-533eff7683a9.png\",\"w\":192}"
 }
