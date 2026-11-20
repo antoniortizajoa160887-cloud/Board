@@ -113,8 +113,20 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050000_d726de14-4f9d-422e-b65d-556e38134bc7.png",
   "w": 192
  },
+ "icons/g-checkers.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050345_381df831-ea8d-4746-8403-7fa1d0b3beca.png",
+  "w": 192
+ },
+ "icons/g-colors.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050345_35e7140e-9d7f-420b-b0e3-d362108809b6.png",
+  "w": 192
+ },
  "icons/g-craps.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_a2b74102-5dc0-415e-9a70-a2cd87f58702.png",
+  "w": 192
+ },
+ "icons/g-four.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050345_e3c8e0ac-c869-4dc4-8080-de0c11adb8a7.png",
   "w": 192
  },
  "icons/g-holdem.webp": {
@@ -135,6 +147,10 @@
  },
  "icons/g-slots.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045959_2a06a1a4-befd-4757-890b-a12081ad8c18.png",
+  "w": 192
+ },
+ "icons/g-tycoon.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050345_6276990a-36c8-4239-a513-c768f43b1ae9.png",
   "w": 192
  },
  "icons/g-videopoker.webp": {
