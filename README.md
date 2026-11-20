@@ -5,13 +5,18 @@ Everything is played with **play chips**: they have no money value, can't be bou
 
 ## The hall
 
+Every screen is in **English and Spanish** (Settings › Language), and every game has a **How to play** guide written for beginners.
+
 - **Casino**
   - **Slots**: Lagoon Slots, 5 reels and 9 lines, wild otter, and a progressive jackpot (five crowns on a line) that grows with every spin.
-  - **Table games**: Blackjack 21 (3 to 2, dealer stands on 17, double, split) and single-zero Roulette. Baccarat and Craps are coming.
-  - **Poker**: Video Poker (jacks or better, hold and draw). Hold'em is coming.
-  - **Bingo & Keno**: Bingo with up to 4 cards (line, four corners, two lines, full card). Keno is coming.
-- **Arcade**: Zip, a speedy otter platformer (coming).
-- **Board & Cards**: Crazy Colors, a color-matching card game against 1 to 3 computer players (Pip, Coral and Moe), with house rules you can turn on: stacking +2 cards, Seven-Zero hand swaps, jump-in, and draw until match. Win the round and the cards left in the other hands become chips. Harbor Tycoon (property trading) is coming.
+  - **Table games**: Blackjack 21 (3 to 2, dealer stands on 17, double, split), single-zero Roulette, Baccarat (player, banker, tie, with a bead road) and Craps (pass, don't pass, odds, field, any 7, any craps).
+  - **Poker**: Video Poker (jacks or better, hold and draw) and Hold'em against Pip, Coral and Moe (blinds 10/20, side pots).
+  - **Bingo & Keno**: Bingo with up to 4 cards (line, four corners, two lines, full card) and Keno (pick 1 to 10 of 80 numbers).
+- **Arcade**: Zip, an otter platformer with 6 levels, double jump with jet sneakers, pearls, crabs, jellyfish and three stars per level.
+- **Board & Cards**
+  - **Harbor Tycoon**: an original property-trading board game around a lagoon harbor (32 spaces, 6 districts, ferries, shipyards, the Fog Bank, the Treasure Cove and the Whirlpool). Buy, build huts and resorts, mortgage and trade against 1 to 3 computer players. The game is saved, so you can leave and come back.
+  - **Checkers** and **Four in a Row** against the computer, Easy, Normal or Hard.
+  - **Crazy Colors**: a color-matching card game against 1 to 3 computer players, with house rules you can turn on: stacking +2 cards, Seven-Zero hand swaps, jump-in, and draw until match.
 - **Stats**: chips, biggest win, jackpot and a per-game record.
 
 Shared across the hall: one chip balance, a daily bonus of 1,000 chips and a free refill when you drop under 100 (once an hour).
@@ -27,7 +32,7 @@ npm test           # rules and payout tests
 npm run build      # production web build in dist/
 ```
 
-Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, colors, wallet); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
+Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, colors, baccarat, craps, holdem, keno, platformer and its levels, tycoon, checkers, four in a row, wallet); `src/i18n.ts` the language switch (`tr('English', 'Español')` at each string); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
 
 ## Android
 

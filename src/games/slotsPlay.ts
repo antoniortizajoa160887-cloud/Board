@@ -48,7 +48,7 @@ export const slotsScreen: Screen = root => {
   overlay.setAttribute('preserveAspectRatio', 'none');
   machine.append(overlay);
 
-  const result = h('div.result', {}, 'Match 3 or more from the left on any of 9 lines');
+  const result = h('div.result', {}, tr('Match 3 or more from the left on any of 9 lines', 'Junta 3 o más desde la izquierda en cualquiera de las 9 líneas'));
   const totalLbl = h('span.total-bet');
   const stepper = betStepper(LINE_BETS, 5, tr('Line bet', 'Por línea'), () => updateTotal());
   const updateTotal = () => { totalLbl.textContent = `${tr('Total', 'Total')} ${fmt(stepper.get() * LINES.length)}`; };
