@@ -15,6 +15,7 @@ import { baccaratScreen } from '../games/baccaratPlay';
 import { crapsScreen } from '../games/crapsPlay';
 import { holdemScreen } from '../games/holdemPlay';
 import { kenoScreen } from '../games/kenoPlay';
+import { tycoonScreen } from '../games/tycoonPlay';
 
 interface Tile { id: string; name: string; sub: string; icon: string; screen?: Screen }
 
@@ -88,11 +89,11 @@ export const arcadeScreen: Screen = root => {
 
 export const boardScreen: Screen = root => {
   root.append(topBar('Board & Cards'), h('div.scroll', {},
-    section('Board games', tile({ id: 'tycoon', name: 'Harbor Tycoon', sub: 'Buy, build, trade', icon: ICONS.board })),
+    section('Board games', tile({ id: 'tycoon', name: 'Harbor Tycoon', sub: 'Buy, build, trade', icon: ICONS.board, screen: tycoonScreen })),
     section('Card games', tile({ id: 'crazycolors', name: 'Crazy Colors', sub: 'Match colors, with house rules', icon: ICONS.cards, screen: colorsScreen }))));
 };
 
-const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors', zip: 'Zip', baccarat: 'Baccarat', craps: 'Craps', holdem: "Hold'em", keno: 'Keno' };
+const NAMES: Record<string, string> = { slots: 'Lagoon Slots', blackjack: 'Blackjack 21', roulette: 'Roulette', videopoker: 'Video Poker', bingo: 'Bingo', colors: 'Crazy Colors', zip: 'Zip', baccarat: 'Baccarat', craps: 'Craps', holdem: "Hold'em", keno: 'Keno', tycoon: 'Harbor Tycoon' };
 
 export const statsScreen: Screen = root => {
   const w = profile.wallet;

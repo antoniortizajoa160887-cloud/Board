@@ -1,12 +1,13 @@
 import { JACKPOT_SEED } from './core/slots';
 import { START_CHIPS, type Wallet } from './core/wallet';
 import { DEFAULT_RULES, type Rules } from './core/colors';
+import type { Game as TycoonGame } from './core/tycoon';
 
 export interface Settings { sound: boolean; music: boolean; vibration: boolean; lang: 'en' | 'es' }
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
-export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] } }
+export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] }; tycoon: TycoonGame | null }
 
 const KEY = 'lucky-lagoon-v1';
 
@@ -17,6 +18,7 @@ function fresh(): Profile {
     stats: { played: {}, won: {} },
     colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
     zip: { stars: [] },
+    tycoon: null,
   };
 }
 
@@ -32,6 +34,7 @@ function load(): Profile {
       stats: { played: { ...p.stats?.played }, won: { ...p.stats?.won } },
       colors: { rules: { ...base.colors.rules, ...p.colors?.rules }, opponents: p.colors?.opponents ?? base.colors.opponents },
       zip: { stars: Array.isArray(p.zip?.stars) ? p.zip!.stars : [] },
+      tycoon: p.tycoon && Array.isArray(p.tycoon.players) && Array.isArray(p.tycoon.deeds) ? { ...p.tycoon, events: [] } : null,
     };
   } catch {
     return base;
