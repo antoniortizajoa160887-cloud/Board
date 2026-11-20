@@ -1,0 +1,18 @@
+{
+ "bg/casino.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_ce8b6b1a-8187-4699-9473-6fce0bfd4255.png",
+  "w": 720
+ },
+ "bg/felt.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044657_1ec530cb-0c96-425f-b79e-70ab5fd58199.png",
+  "w": 720
+ },
+ "chars/zip.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_3ec08c22-f270-4b3a-9877-7218ee406d6a.png",
+  "w": 512
+ },
+ "icons/stats.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044656_72834a9b-3a57-4f36-af1a-5507189ef803.png",
+  "w": 384
+ }
+}
