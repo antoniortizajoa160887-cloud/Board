@@ -101,12 +101,44 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_044742_b80baad6-b8df-4811-8a0b-813cd39d8f6c.png",
   "w": 384
  },
+ "icons/g-baccarat.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_90d18feb-5e17-4b89-94e1-899192d168b1.png",
+  "w": 192
+ },
+ "icons/g-bingo.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050228_17af2b8e-a8c8-4481-86e8-adcc1cc23323.png",
+  "w": 192
+ },
  "icons/g-blackjack.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050000_d726de14-4f9d-422e-b65d-556e38134bc7.png",
   "w": 192
  },
+ "icons/g-craps.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_a2b74102-5dc0-415e-9a70-a2cd87f58702.png",
+  "w": 192
+ },
+ "icons/g-holdem.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050229_610ffecb-6e6c-43ef-a29f-84436272c7d7.png",
+  "w": 192
+ },
+ "icons/g-keno.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050228_3678eb60-5242-46d1-9eff-98033228d285.png",
+  "w": 192
+ },
+ "icons/g-pokerbingo.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050229_1d374651-e3f1-48b8-b81a-4905fe4a4bc9.png",
+  "w": 192
+ },
+ "icons/g-roulette.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_894ef153-e831-4bc9-8b18-fc91c7cb2027.png",
+  "w": 192
+ },
  "icons/g-slots.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045959_2a06a1a4-befd-4757-890b-a12081ad8c18.png",
+  "w": 192
+ },
+ "icons/g-videopoker.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_af92c69a-7211-4c19-bb7d-533eff7683a9.png",
   "w": 192
  },
  "icons/stats.webp": {
