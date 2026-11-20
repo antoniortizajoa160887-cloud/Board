@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent}#s{width:100%;height:100%;display:block}</style></head>
+<body><div id="s"></div>
+<script type="module">
+import { dealerSvg } from '/src/ui/art.ts';
+const s = document.getElementById('s');
+const otter = dealerSvg().replace('<svg', '<svg width="100%" height="100%"');
+window.draw = kind => {
+  const bg = `<defs><radialGradient id="bgG" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="#2a2a8a"/><stop offset="1" stop-color="#0b1030"/></radialGradient><linearGradient id="ring" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset=".5" stop-color="#f5c542"/><stop offset="1" stop-color="#a86b12"/></linearGradient></defs>`;
+  const rays = Array.from({ length: 16 }, (_, i) => `<path d="M50 50 L${50 + 70 * Math.cos(i * Math.PI / 8)} ${50 + 70 * Math.sin(i * Math.PI / 8)} L${50 + 70 * Math.cos((i + .5) * Math.PI / 8)} ${50 + 70 * Math.sin((i + .5) * Math.PI / 8)}Z" fill="#f5c542" opacity=".09"/>`).join('');
+  if (kind === 'fg') {
+    s.innerHTML = `<div style="position:absolute;left:24%;top:22%;width:52%;height:58%">${otter}</div>`;
+  } else if (kind === 'splash') {
+    s.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0">${bg}<rect width="100" height="100" fill="url(#bgG)"/>${rays}</svg>
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-60%);width:min(36vw,36vh);height:min(39vw,39vh)">${otter}</div>
+      <div style="position:absolute;left:0;right:0;top:calc(50% + min(16vw,16vh));text-align:center;font:min(7vw,7vh) Georgia,serif;letter-spacing:.2em;color:#f5c542;text-shadow:0 0 2vh #f5c54288">LUCKY LAGOON</div>`;
+  } else {
+    const round = kind === 'round';
+    s.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 100 100">${bg}${round ? '<circle cx="50" cy="50" r="50" fill="url(#bgG)"/>' : '<rect width="100" height="100" rx="18" fill="url(#bgG)"/>'}${rays}<circle cx="50" cy="50" r="${round ? 46 : 44}" fill="none" stroke="url(#ring)" stroke-width="3"/></svg>
+      <div style="position:absolute;left:18%;top:14%;width:64%;height:72%">${otter}</div>`;
+  }
+};
+window.ready = true;
+</script></body></html>
