@@ -1,4 +1,5 @@
 import { isNative, openExternal } from './platform';
+import { tr } from './i18n';
 
 declare const __BUILD_ID__: string;
 declare const __APP_VERSION__: string;
@@ -30,13 +31,15 @@ function banner(download: string) {
   const el = document.createElement('div');
   el.id = 'update-bar';
   el.setAttribute('role', 'status');
-  el.innerHTML = '<span>A new version of Lucky Lagoon is ready.</span>';
+  const msg = document.createElement('span');
+  msg.textContent = tr('A new version of Lucky Lagoon is ready.', 'Hay una nueva versión de Lucky Lagoon.');
+  el.append(msg);
   const go = document.createElement('button');
-  go.textContent = 'Download';
+  go.textContent = tr('Download', 'Descargar');
   go.onclick = () => openExternal(download);
   const later = document.createElement('button');
   later.className = 'later';
-  later.setAttribute('aria-label', 'Later');
+  later.setAttribute('aria-label', tr('Later', 'Más tarde'));
   later.textContent = '✕';
   later.onclick = () => el.remove();
   el.append(go, later);

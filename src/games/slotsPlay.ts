@@ -9,6 +9,17 @@ import type { Screen } from '../ui/router';
 import { dialog, topBar } from '../ui/shell';
 import { betStepper, cantAfford, resultBanner } from './kit';
 import { PAYTABLE } from '../core/slots';
+import { tr } from '../i18n';
+import { howToPlay } from './howto';
+
+export const slotsHowTo = () => howToPlay(tr('How to play Lagoon Slots', 'Cómo jugar a las Tragamonedas'), [
+  [tr('The idea', 'La idea'), tr('Spin the 5 reels. When the same symbols line up from the left reel along one of the 9 lines, you win.', 'Gira los 5 rodillos. Cuando símbolos iguales se alinean desde el rodillo de la izquierda en una de las 9 líneas, ganas.')],
+  [tr('Your bet', 'Tu apuesta'), tr('Choose the LINE BET with − and +. You play all 9 lines, so a spin costs 9 × the line bet (shown as Total).', 'Elige la APUESTA POR LÍNEA con − y +. Juegas las 9 líneas, así que cada giro cuesta 9 × la apuesta por línea (se ve en Total).')],
+  [tr('Spin', 'Girar'), tr('Tap SPIN. Wins light up their line and pay right away. AUTO spins 10 times in a row; tap it again to stop.', 'Toca GIRAR. Las líneas ganadoras se iluminan y pagan al momento. AUTO gira 10 veces seguidas; tócalo de nuevo para parar.')],
+  [tr('Symbols', 'Símbolos'), tr('Tap PAYS to see what 3, 4 or 5 of each symbol pays. The WILD replaces any symbol except the crown.', 'Toca PAGOS para ver cuánto paga 3, 4 o 5 de cada símbolo. El COMODÍN reemplaza a cualquier símbolo menos la corona.')],
+  [tr('Jackpot', 'Premio mayor'), tr('A small part of every spin feeds the jackpot. Five crowns on a line win all of it!', 'Una pequeña parte de cada giro alimenta el premio mayor. ¡Cinco coronas en una línea se lo llevan todo!')],
+  [tr('Beginner tip', 'Consejo para empezar'), tr('Start with a small line bet so your chips last longer. It is all luck: no strategy changes the odds.', 'Empieza con una apuesta pequeña para que tus fichas duren más. Todo es suerte: ninguna estrategia cambia las probabilidades.')],
+]);
 
 const LINE_BETS = [1, 2, 5, 10, 25, 50, 100];
 const CELL = 100; // % of a cell height per symbol (cells are 1/3 of the window)
@@ -20,7 +31,7 @@ export const slotsScreen: Screen = root => {
   let auto = 0;
   let alive = true;
 
-  const jp = h('div.jackpot-meter.small', {}, h('span.jp-label', {}, 'JACKPOT'), h('span.jp-amount', {}, fmt(profile.wallet.jackpot)));
+  const jp = h('div.jackpot-meter.small', {}, h('span.jp-label', {}, tr('JACKPOT', 'PREMIO MAYOR')), h('span.jp-amount', {}, fmt(profile.wallet.jackpot)));
   const reels: HTMLElement[] = [];
   const strips: HTMLElement[] = [];
   const machine = h('div.slot-window');
@@ -39,15 +50,15 @@ export const slotsScreen: Screen = root => {
 
   const result = h('div.result', {}, 'Match 3 or more from the left on any of 9 lines');
   const totalLbl = h('span.total-bet');
-  const stepper = betStepper(LINE_BETS, 5, 'Line bet', () => updateTotal());
-  const updateTotal = () => { totalLbl.textContent = `Total ${fmt(stepper.get() * LINES.length)}`; };
+  const stepper = betStepper(LINE_BETS, 5, tr('Line bet', 'Por línea'), () => updateTotal());
+  const updateTotal = () => { totalLbl.textContent = `${tr('Total', 'Total')} ${fmt(stepper.get() * LINES.length)}`; };
   updateTotal();
 
-  const spinBtn = h('button.btn.spin', { onclick: () => void doSpin() }, 'SPIN');
+  const spinBtn = h('button.btn.spin', { onclick: () => void doSpin() }, tr('SPIN', 'GIRAR'));
   const autoBtn = h('button.btn.small', { onclick: () => {
-    if (auto) { auto = 0; autoBtn.textContent = 'Auto ×10'; return; }
-    auto = 10; autoBtn.textContent = 'Stop'; void doSpin();
-  } }, 'Auto ×10');
+    if (auto) { auto = 0; autoBtn.textContent = 'AUTO ×10'; return; }
+    auto = 10; autoBtn.textContent = tr('Stop', 'Parar'); void doSpin();
+  } }, 'AUTO ×10');
 
   const fill = (strip: HTMLElement, syms: Sym[]) => {
     strip.replaceChildren(...syms.map(s => h('div.cell', { html: symbolSvg(s) })));
@@ -60,7 +71,7 @@ export const slotsScreen: Screen = root => {
     if (busy || !alive) return;
     const lineBet = stepper.get();
     const total = lineBet * LINES.length;
-    if (cantAfford(total)) { auto = 0; autoBtn.textContent = 'Auto ×10'; return; }
+    if (cantAfford(total)) { auto = 0; autoBtn.textContent = 'AUTO ×10'; return; }
     busy = true;
     stepper.setEnabled(false);
     spinBtn.disabled = true;
@@ -69,7 +80,7 @@ export const slotsScreen: Screen = root => {
     jp.lastElementChild!.textContent = fmt(profile.wallet.jackpot);
     overlay.replaceChildren();
     machine.querySelectorAll('.cell.hit').forEach(c => c.classList.remove('hit'));
-    resultBanner(result, 'Good luck!', 'info');
+    resultBanner(result, tr('Good luck!', '¡Buena suerte!'), 'info');
 
     const { grid } = spin(rng);
     // Each reel: the current 3, a run of random symbols, then the result. It slides down to the result.
@@ -98,7 +109,7 @@ export const slotsScreen: Screen = root => {
     spinBtn.disabled = false;
     if (auto > 0) {
       auto--;
-      autoBtn.textContent = auto ? `Stop (${auto})` : 'Auto ×10';
+      autoBtn.textContent = auto ? tr(`Stop (${auto})`, `Parar (${auto})`) : 'AUTO ×10';
       if (auto) { await sleep(500); void doSpin(); }
     }
   }
@@ -127,7 +138,7 @@ export const slotsScreen: Screen = root => {
       sfx('jackpot');
       buzz(true);
       coinBurst(machine, 60);
-      resultBanner(result, `JACKPOT! +${fmt(pay)}`, 'win');
+      resultBanner(result, tr(`JACKPOT! +${fmt(pay)}`, `¡PREMIO MAYOR! +${fmt(pay)}`), 'win');
       dialog('JACKPOT!', h('p.big-win', {}, `You hit the Lagoon Jackpot: ${fmt(amount)} chips!`));
       auto = 0;
     } else if (pay > 0) {
@@ -136,24 +147,25 @@ export const slotsScreen: Screen = root => {
       sfx(big ? 'bigwin' : 'win');
       if (big) { buzz(true); coinBurst(machine, 40); }
       else coinBurst(spinBtn, 10);
-      resultBanner(result, `${big ? 'BIG WIN! ' : 'Win '}+${fmt(pay)}`, 'win');
+      resultBanner(result, `${big ? tr('BIG WIN! ', '¡GRAN PREMIO! ') : tr('Win ', 'Ganas ')}+${fmt(pay)}`, 'win');
     } else {
-      resultBanner(result, 'No win this time', 'lose');
+      resultBanner(result, tr('No win this time', 'Esta vez no hubo premio'), 'lose');
     }
     await sleep(pay > 0 ? 700 : 200);
   }
 
   const payBtn = h('button.btn.small', { onclick: () => {
     const rows = (['jackpot', 'wild', 'seven', 'bar', 'bell', 'shell', 'star', 'pearl'] as Sym[]).map(s =>
-      h('div.pay-row', {}, h('span.pay-sym', { html: symbolSvg(s) }), h('span', {}, s === 'jackpot' ? `5: JACKPOT · 4: ${PAYTABLE[s][1]} · 3: ${PAYTABLE[s][0]}` : `5: ${PAYTABLE[s][2]} · 4: ${PAYTABLE[s][1]} · 3: ${PAYTABLE[s][0]}`)));
-    dialog('Pays (× line bet)', h('div.paytable', {}, ...rows, h('p.muted', {}, 'Wins count from the leftmost reel. Wild stands in for every symbol except the crown. Five crowns on a line win the jackpot, which grows with every spin.')));
-  } }, 'Pays');
+      h('div.pay-row', {}, h('span.pay-sym', { html: symbolSvg(s) }), h('span', {}, s === 'jackpot' ? `5: ${tr('JACKPOT', 'PREMIO MAYOR')} · 4: ${PAYTABLE[s][1]} · 3: ${PAYTABLE[s][0]}` : `5: ${PAYTABLE[s][2]} · 4: ${PAYTABLE[s][1]} · 3: ${PAYTABLE[s][0]}`)));
+    dialog(tr('Pays (× line bet)', 'Pagos (× apuesta por línea)'), h('div.paytable', {}, ...rows, h('p.muted', {}, tr('Wins count from the leftmost reel. Wild stands in for every symbol except the crown. Five crowns on a line win the jackpot, which grows with every spin.', 'Los premios cuentan desde el rodillo de la izquierda. El comodín reemplaza a todos los símbolos menos la corona. Cinco coronas en una línea ganan el premio mayor, que crece con cada giro.'))));
+  } }, tr('Pays', 'Pagos'));
 
   root.classList.add('slots');
-  root.append(topBar('Lagoon Slots'), jp,
-    h('div.slot-frame', {}, h('div.marquee', {}, 'LAGOON SLOTS'), machine),
+  root.append(topBar(tr('Lagoon Slots', 'Tragamonedas Laguna')), jp,
+    h('div.slot-frame', {}, h('div.marquee', {}, tr('LAGOON SLOTS', 'TRAGAMONEDAS LAGUNA')), machine),
     result,
     h('div.controls', {}, stepper.el, totalLbl),
-    h('div.controls', {}, payBtn, spinBtn, autoBtn));
+    h('div.controls', {}, payBtn, spinBtn, autoBtn),
+    h('div.controls', {}, h('button.btn.small', { onclick: slotsHowTo }, tr('How to play', 'Cómo jugar'))));
   return () => { alive = false; auto = 0; };
 };

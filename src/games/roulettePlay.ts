@@ -6,9 +6,20 @@ import { addChips, countPlay, profile } from '../save';
 import { chipSvg, CHIP_COLORS } from '../ui/art';
 import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
-import { dialog, topBar } from '../ui/shell';
+import { topBar } from '../ui/shell';
 import { resultBanner } from './kit';
 import { toast } from '../ui/dom';
+import { tr } from '../i18n';
+import { howToPlay } from './howto';
+
+export const rouletteHowTo = () => howToPlay(tr('How to play Roulette', 'Cómo jugar a la Ruleta'), [
+  [tr('The idea', 'La idea'), tr('The ball lands in one of 37 pockets: 0 to 36. You bet on where it will land.', 'La bola cae en una de 37 casillas: del 0 al 36. Apuestas a dónde caerá.')],
+  [tr('Placing bets', 'Apostar'), tr('Pick a chip value at the bottom, then tap the table. Tap again to add more chips. CLEAR removes your bets; REBET repeats the last ones.', 'Elige el valor de la ficha abajo y toca la mesa. Toca otra vez para añadir más. BORRAR quita tus apuestas; REPETIR vuelve a poner las anteriores.')],
+  [tr('Inside bets', 'Apuestas a números'), tr('A single number pays 35 to 1. Big prize, small chance.', 'Un solo número paga 35 a 1. Gran premio, poca probabilidad.')],
+  [tr('Outside bets', 'Apuestas exteriores'), tr('Red or black, odd or even, 1–18 or 19–36 pay 1 to 1. A dozen (1st, 2nd, 3rd 12) or a column (2:1) pays 2 to 1. If the ball lands on 0, every outside bet loses.', 'Rojo o negro, par o impar, 1–18 o 19–36 pagan 1 a 1. Una docena (1ª, 2ª, 3ª 12) o una columna (2:1) paga 2 a 1. Si la bola cae en 0, pierden todas las apuestas exteriores.')],
+  [tr('Spin', 'Girar'), tr('Tap SPIN. The winning number glows and the history row shows the last results.', 'Toca GIRAR. El número ganador brilla y la fila de historial muestra los últimos resultados.')],
+  [tr('Beginner tip', 'Consejo para empezar'), tr('Start with red or black: you win almost half the time. Past numbers do not change what comes next.', 'Empieza con rojo o negro: ganas casi la mitad de las veces. Los números anteriores no cambian lo que sale después.')],
+]);
 
 const CHIPS = [10, 25, 100, 500, 1000];
 const COLOR_HEX = { red: '#d42a2a', black: '#141a33', green: '#0f9a5c' };
@@ -31,7 +42,7 @@ export const rouletteScreen: Screen = root => {
   const wheel = h('div.wheel', {}, canvas, ballArm, h('div.wheel-hub'));
   let wheelAngle = 0;
 
-  const result = h('div.result', {}, 'Tap a chip, then tap the table');
+  const result = h('div.result', {}, tr('Tap a chip, then tap the table', 'Toca una ficha y luego la mesa'));
   const totalEl = h('span.total-bet', {}, 'Bets 0');
   const histEl = h('div.history');
 
@@ -51,12 +62,12 @@ export const rouletteScreen: Screen = root => {
   }
   grid.append(cell({ kind: 'column', c: 0 }, '2:1', '.out'), cell({ kind: 'column', c: 1 }, '2:1', '.out'), cell({ kind: 'column', c: 2 }, '2:1', '.out'));
   const outside = h('div.routside', {},
-    cell({ kind: 'dozen', d: 0 }, '1st 12', '.out'), cell({ kind: 'dozen', d: 1 }, '2nd 12', '.out'), cell({ kind: 'dozen', d: 2 }, '3rd 12', '.out'),
-    cell({ kind: 'low' }, '1–18', '.out'), cell({ kind: 'even' }, 'Even', '.out'), cell({ kind: 'red' }, '◆', '.out.red'),
-    cell({ kind: 'black' }, '◆', '.out.black'), cell({ kind: 'odd' }, 'Odd', '.out'), cell({ kind: 'high' }, '19–36', '.out'));
+    cell({ kind: 'dozen', d: 0 }, tr('1st 12', '1ª 12'), '.out'), cell({ kind: 'dozen', d: 1 }, tr('2nd 12', '2ª 12'), '.out'), cell({ kind: 'dozen', d: 2 }, tr('3rd 12', '3ª 12'), '.out'),
+    cell({ kind: 'low' }, '1–18', '.out'), cell({ kind: 'even' }, tr('Even', 'Par'), '.out'), cell({ kind: 'red' }, '◆', '.out.red'),
+    cell({ kind: 'black' }, '◆', '.out.black'), cell({ kind: 'odd' }, tr('Odd', 'Impar'), '.out'), cell({ kind: 'high' }, '19–36', '.out'));
 
   const chipBar = h('div.chip-bar', {}, ...CHIPS.map(v => {
-    const b = h('button.chip-btn' + (v === chip ? '.on' : ''), { 'aria-label': `${v} chip`, html: chipSvg(v, CHIP_COLORS[v]), onclick: () => {
+    const b = h('button.chip-btn' + (v === chip ? '.on' : ''), { 'aria-label': tr(`${v} chip`, `ficha de ${v}`), html: chipSvg(v, CHIP_COLORS[v]), onclick: () => {
       chip = v; sfx('chip');
       chipBar.querySelectorAll('.chip-btn').forEach(x => x.classList.toggle('on', x === b));
     } });
@@ -71,12 +82,12 @@ export const rouletteScreen: Screen = root => {
       const amt = bets[key];
       if (amt) el.append(h('span.rchip', {}, amt >= 1000 ? `${amt / 1000}K` : String(amt)));
     });
-    totalEl.textContent = `Bets ${fmt(total())}`;
+    totalEl.textContent = tr(`Bets ${fmt(total())}`, `Apuestas ${fmt(total())}`);
   }
 
   function place(key: string) {
     if (busy) return;
-    if (profile.wallet.chips < chip) { toast('Not enough chips', 'lose'); return; }
+    if (profile.wallet.chips < chip) { toast(tr('Not enough chips', 'No tienes fichas suficientes'), 'lose'); return; }
     addChips(-chip);
     bets[key] = (bets[key] ?? 0) + chip;
     sfx('chip');
@@ -95,7 +106,7 @@ export const rouletteScreen: Screen = root => {
     if (busy || !Object.keys(lastBets).length) return;
     clear();
     const t = Object.values(lastBets).reduce((a, b) => a + b, 0);
-    if (profile.wallet.chips < t) { toast('Not enough chips', 'lose'); return; }
+    if (profile.wallet.chips < t) { toast(tr('Not enough chips', 'No tienes fichas suficientes'), 'lose'); return; }
     addChips(-t);
     bets = { ...lastBets };
     sfx('chip');
@@ -104,7 +115,7 @@ export const rouletteScreen: Screen = root => {
 
   async function spinWheel() {
     if (busy) return;
-    if (!total()) { toast('Place a bet first'); return; }
+    if (!total()) { toast(tr('Place a bet first', 'Primero haz una apuesta')); return; }
     busy = true;
     spinBtn.disabled = true;
     lastBets = { ...bets };
@@ -123,7 +134,7 @@ export const rouletteScreen: Screen = root => {
     void ballArm.offsetWidth;
     ballArm.style.transition = 'transform 5s cubic-bezier(.2,.65,.2,1)';
     ballArm.style.transform = `rotate(${ballEnd}deg)`;
-    resultBanner(result, 'No more bets', 'info');
+    resultBanner(result, tr('No more bets', 'No va más'), 'info');
     const ticks = window.setInterval(() => sfx('tick'), 120);
     await sleep(4200);
     clearInterval(ticks);
@@ -143,7 +154,7 @@ export const rouletteScreen: Screen = root => {
       coinBurst(wheel, won >= staked * 10 ? 40 : 16);
     } else sfx('lose');
     countPlay('roulette', won > staked);
-    resultBanner(result, `${n} ${colorOf(n).toUpperCase()} · ${won ? `you get ${fmt(won)}` : 'no win'}`, won > staked ? 'win' : won ? 'push' : 'lose');
+    resultBanner(result, `${n} ${tr(colorOf(n).toUpperCase(), { red: 'ROJO', black: 'NEGRO', green: 'VERDE' }[colorOf(n)] ?? '')} · ${won ? tr(`you get ${fmt(won)}`, `recibes ${fmt(won)}`) : tr('no win', 'sin premio')}`, won > staked ? 'win' : won ? 'push' : 'lose');
     await sleep(1400);
     cells.get(betKey({ kind: 'number', n }))?.classList.remove('hit');
     bets = {};
@@ -152,17 +163,15 @@ export const rouletteScreen: Screen = root => {
     spinBtn.disabled = false;
   }
 
-  const spinBtn = h('button.btn.primary.spin', { onclick: () => void spinWheel() }, 'SPIN');
-  const rules = h('button.btn.small', { onclick: () => dialog('Roulette', h('div', {},
-    h('p', {}, 'Single zero wheel, 37 pockets. Pick a chip value and tap the table to bet; tap again to add more.'),
-    h('p', {}, 'Number 35 to 1 · Dozen or column 2 to 1 · Red/black, odd/even, 1–18/19–36 1 to 1. Zero loses every outside bet.'))) }, 'Rules');
+  const spinBtn = h('button.btn.primary.spin', { onclick: () => void spinWheel() }, tr('SPIN', 'GIRAR'));
+  const rules = h('button.btn.small', { onclick: rouletteHowTo }, tr('How to play', 'Cómo jugar'));
 
   root.classList.add('roulette', 'felt');
-  root.append(topBar('Roulette'),
+  root.append(topBar(tr('Roulette', 'Ruleta')),
     h('div.wheel-zone', {}, h('div.pointer'), wheel), histEl, result,
     h('div.rtable', {}, grid, outside),
     chipBar,
-    h('div.controls', {}, h('button.btn.small', { onclick: clear }, 'Clear'), h('button.btn.small', { onclick: rebet }, 'Rebet'), totalEl, spinBtn, rules));
+    h('div.controls', {}, h('button.btn.small', { onclick: clear }, tr('Clear', 'Borrar')), h('button.btn.small', { onclick: rebet }, tr('Rebet', 'Repetir')), totalEl, spinBtn, rules));
   return () => { alive = false; if (!busy) clear(); };
 };
 

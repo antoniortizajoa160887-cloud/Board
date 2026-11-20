@@ -7,8 +7,20 @@ import { addChips, countPlay, profile } from '../save';
 import { cardSvg, dealerSvg } from '../ui/art';
 import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
-import { dialog, topBar } from '../ui/shell';
+import { topBar } from '../ui/shell';
 import { betStepper, cantAfford, resultBanner } from './kit';
+import { tr } from '../i18n';
+import { howToPlay } from './howto';
+
+export const blackjackHowTo = () => howToPlay(tr('How to play Blackjack 21', 'Cómo jugar al Blackjack 21'), [
+  [tr('The goal', 'El objetivo'), tr('Get a hand closer to 21 than Ollie, the dealer, without going over 21.', 'Consigue una mano más cerca de 21 que Ollie, el crupier, sin pasarte de 21.')],
+  [tr('Card values', 'Valor de las cartas'), tr('Number cards count their number. J, Q and K count 10. An ace counts 11, or 1 if 11 would take you over 21 (a hand with an ace counted as 11 is called "soft").', 'Las cartas numéricas valen su número. J, Q y K valen 10. El as vale 11, o 1 si con 11 te pasarías de 21 (una mano con un as que vale 11 se llama "suave").')],
+  [tr('Start', 'Empezar'), tr('Choose your bet and tap DEAL. You get two cards face up; Ollie gets one up and one hidden.', 'Elige tu apuesta y toca REPARTIR. Recibes dos cartas boca arriba; Ollie recibe una arriba y otra oculta.')],
+  [tr('Hit or stand', 'Pedir o plantarse'), tr('HIT takes another card. STAND keeps your total. Go over 21 and you bust (you lose).', 'PEDIR toma otra carta. PLANTARSE se queda con tu total. Si pasas de 21 te pasaste (pierdes).')],
+  [tr('Double and split', 'Doblar y dividir'), tr('DOUBLE: double your bet, take exactly one more card. SPLIT: with a pair, play it as two hands, each with its own bet.', 'DOBLAR: duplica tu apuesta y toma solo una carta más. DIVIDIR: con un par, juégalo como dos manos, cada una con su apuesta.')],
+  [tr('Ollie\'s turn', 'El turno de Ollie'), tr('Ollie shows the hidden card and must take cards until reaching 17 or more. Closer to 21 wins; a tie is a push and you get your bet back. A blackjack (ace + 10-value card) pays 3 to 2.', 'Ollie muestra su carta oculta y debe pedir hasta llegar a 17 o más. Gana quien esté más cerca de 21; un empate te devuelve la apuesta. Un blackjack (as + carta de 10) paga 3 a 2.')],
+  [tr('Beginner tip', 'Consejo para empezar'), tr('Stand on 17 or more. With 12 to 16, stand when Ollie shows 2 to 6 and hit when Ollie shows 7 or higher. Always double on 11.', 'Plántate con 17 o más. Con 12 a 16, plántate si Ollie muestra de 2 a 6 y pide si muestra 7 o más. Dobla siempre con 11.')],
+]);
 
 const BETS = [10, 25, 50, 100, 250, 500, 1000];
 const DECKS = 6;
@@ -33,14 +45,14 @@ export const blackjackScreen: Screen = root => {
   const dealerRow = h('div.cards-row.dealer-row');
   const dealerTotal = h('div.hand-total');
   const handsBox = h('div.hands');
-  const result = h('div.result', {}, 'Place your bet');
+  const result = h('div.result', {}, tr('Place your bet', 'Haz tu apuesta'));
   const stepper = betStepper(BETS, 50);
 
-  const dealBtn = h('button.btn.primary.wide', { onclick: () => void deal() }, 'DEAL');
-  const hitBtn = h('button.btn', { onclick: () => void hit() }, 'Hit');
-  const standBtn = h('button.btn', { onclick: () => void stand() }, 'Stand');
-  const doubleBtn = h('button.btn', { onclick: () => void doubleDown() }, 'Double');
-  const splitBtn = h('button.btn', { onclick: () => void split() }, 'Split');
+  const dealBtn = h('button.btn.primary.wide', { onclick: () => void deal() }, tr('DEAL', 'REPARTIR'));
+  const hitBtn = h('button.btn', { onclick: () => void hit() }, tr('Hit', 'Pedir'));
+  const standBtn = h('button.btn', { onclick: () => void stand() }, tr('Stand', 'Plantarse'));
+  const doubleBtn = h('button.btn', { onclick: () => void doubleDown() }, tr('Double', 'Doblar'));
+  const splitBtn = h('button.btn', { onclick: () => void split() }, tr('Split', 'Dividir'));
   const betBar = h('div.controls', {}, stepper.el, dealBtn);
   const playBar = h('div.controls', {}, hitBtn, standBtn, doubleBtn, splitBtn);
 
@@ -60,7 +72,7 @@ export const blackjackScreen: Screen = root => {
           if (c === newCard) el.classList.add('deal-in');
           return el;
         })),
-        h('div.hand-total', {}, `${t.soft && t.total < 21 ? 'soft ' : ''}${t.total}`, h('span.hand-bet', {}, ` · bet ${fmt(hd.bet)}`)));
+        h('div.hand-total', {}, `${t.soft && t.total < 21 ? tr('soft ', 'suave ') : ''}${t.total}`, h('span.hand-bet', {}, tr(` · bet ${fmt(hd.bet)}`, ` · apuesta ${fmt(hd.bet)}`))));
     }));
     betBar.hidden = phase === 'play';
     playBar.hidden = phase !== 'play';
@@ -168,7 +180,7 @@ export const blackjackScreen: Screen = root => {
     if (paid) addChips(paid);
     const net = paid - staked;
     countPlay('blackjack', net > 0);
-    const label: Record<Outcome, string> = { blackjack: 'Blackjack!', win: 'You win', push: 'Push', lose: 'Ollie wins' };
+    const label: Record<Outcome, string> = { blackjack: tr('Blackjack!', '¡Blackjack!'), win: tr('You win', 'Ganas'), push: tr('Push', 'Empate'), lose: tr('Ollie wins', 'Gana Ollie') };
     const text = outcomes.map(o => label[o]).join(' · ') + (net > 0 ? `  +${fmt(net)}` : net < 0 ? `  −${fmt(-net)}` : '');
     if (net > 0) { sfx(outcomes.includes('blackjack') ? 'bigwin' : 'win'); coinBurst(handsBox); buzz(); }
     else if (net < 0) sfx('lose');
@@ -176,15 +188,13 @@ export const blackjackScreen: Screen = root => {
     render();
   }
 
-  const rules = h('button.btn.small', { onclick: () => dialog('Blackjack 21', h('div', {},
-    h('p', {}, 'Get closer to 21 than Ollie without going over. Face cards count 10, aces 1 or 11.'),
-    h('p', {}, 'Blackjack pays 3 to 2. Ollie stands on every 17. Double on your first two cards, split one pair (split aces get one card each). Six decks, reshuffled when a quarter is left.'))) }, 'Rules');
+  const rules = h('button.btn.small', { onclick: blackjackHowTo }, tr('How to play', 'Cómo jugar'));
 
   root.classList.add('table-game', 'felt');
   root.append(topBar('Blackjack 21'),
     h('div.table', {},
       h('div.dealer-spot', {}, h('div.dealer-mini', { html: dealerSvg() }), h('div', {}, dealerRow, dealerTotal)),
-      h('div.felt-text', {}, 'BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17'),
+      h('div.felt-text', {}, tr('BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17', 'BLACKJACK PAGA 3 A 2 · EL CRUPIER SE PLANTA EN 17')),
       handsBox),
     result, betBar, playBar, h('div.controls', {}, rules));
   render();

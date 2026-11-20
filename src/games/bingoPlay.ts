@@ -5,11 +5,21 @@ import { buzz } from '../platform';
 import { addChips, countPlay } from '../save';
 import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
-import { dialog, topBar } from '../ui/shell';
+import { topBar } from '../ui/shell';
 import { betStepper, cantAfford, resultBanner } from './kit';
+import { tr } from '../i18n';
+import { howToPlay } from './howto';
 
 const PRICES = [10, 25, 50, 100, 250];
-const PRIZE_NAMES: Record<Prize, string> = { line: 'Line', corners: 'Four corners', twoLines: 'Two lines', full: 'Full card' };
+const PRIZE_NAMES = (): Record<Prize, string> => ({ line: tr('Line', 'Línea'), corners: tr('Four corners', 'Cuatro esquinas'), twoLines: tr('Two lines', 'Dos líneas'), full: tr('Full card', 'Cartón lleno') });
+
+export const bingoHowTo = () => howToPlay(tr('How to play Bingo', 'Cómo jugar al Bingo'), [
+  [tr('The idea', 'La idea'), tr(`Balls with numbers are called one by one (${BALLS_PER_GAME} per game). When a called number is on your card it gets marked for you.`, `Se cantan bolas con números una por una (${BALLS_PER_GAME} por partida). Si un número cantado está en tu cartón, se marca solo.`)],
+  [tr('Get ready', 'Prepárate'), tr('Choose how many CARDS to play (1 to 4) and the PRICE of each card, then tap PLAY. More cards = more chances, but each one costs its price.', 'Elige cuántos CARTONES jugar (1 a 4) y el PRECIO de cada uno, y toca JUGAR. Más cartones = más oportunidades, pero cada uno cuesta su precio.')],
+  [tr('Prizes', 'Premios'), tr(`Each card can win each prize once, times its price: a line (row, column or diagonal) ${PRIZE_PAYS.line}× · four corners ${PRIZE_PAYS.corners}× · two lines ${PRIZE_PAYS.twoLines}× · full card (BINGO!) ${PRIZE_PAYS.full}×.`, `Cada cartón puede ganar cada premio una vez, por su precio: una línea (fila, columna o diagonal) ${PRIZE_PAYS.line}× · cuatro esquinas ${PRIZE_PAYS.corners}× · dos líneas ${PRIZE_PAYS.twoLines}× · cartón lleno (¡BINGO!) ${PRIZE_PAYS.full}×.`)],
+  [tr('Free space', 'Espacio libre'), tr('The star in the middle is free: it counts as already marked.', 'La estrella del centro es gratis: cuenta como ya marcada.')],
+  [tr('Beginner tip', 'Consejo para empezar'), tr('Just sit back and watch! Two cheap cards are a fun way to start.', '¡Solo relájate y mira! Dos cartones baratos son una buena forma de empezar.')],
+]);
 
 export const bingoScreen: Screen = root => {
   const rng = makeRng();
@@ -23,10 +33,10 @@ export const bingoScreen: Screen = root => {
   const countEl = h('div.ball-count', {}, `0 / ${BALLS_PER_GAME}`);
   const recent = h('div.recent-balls');
   const cardsBox = h('div.bingo-cards');
-  const result = h('div.result', {}, 'Pick how many cards and their price, then play');
-  const price = betStepper(PRICES, 25, 'Card price');
-  const count = betStepper([1, 2, 3, 4], 1, 'Cards', n => newCards(n), v => String(v));
-  const playBtn = h('button.btn.primary.wide', { onclick: () => void play() }, 'PLAY');
+  const result = h('div.result', {}, tr('Pick how many cards and their price, then play', 'Elige cuántos cartones y su precio, y juega'));
+  const price = betStepper(PRICES, 25, tr('Card price', 'Precio'));
+  const count = betStepper([1, 2, 3, 4], 1, tr('Cards', 'Cartones'), n => newCards(n), v => String(v));
+  const playBtn = h('button.btn.primary.wide', { onclick: () => void play() }, tr('PLAY', 'JUGAR'));
 
   function newCards(n: number) {
     if (running) return;
@@ -46,7 +56,7 @@ export const bingoScreen: Screen = root => {
         if (n === justCalled) el.classList.add('daub');
         return el;
       })),
-      h('div.bingo-prizes', {}, ...[...paidPrizes[ci]].map(p => h('span.prize-tag', {}, PRIZE_NAMES[p]))))));
+      h('div.bingo-prizes', {}, ...[...paidPrizes[ci]].map(p => h('span.prize-tag', {}, PRIZE_NAMES()[p]))))));
   }
 
   async function play() {
@@ -63,7 +73,7 @@ export const bingoScreen: Screen = root => {
     called = new Set();
     recent.replaceChildren();
     render();
-    resultBanner(result, 'Here we go!', 'info');
+    resultBanner(result, tr('Here we go!', '¡Allá vamos!'), 'info');
     const order = drawOrder(rng).slice(0, BALLS_PER_GAME);
     let won = 0;
     for (let i = 0; i < order.length; i++) {
@@ -94,23 +104,21 @@ export const bingoScreen: Screen = root => {
           sfx(p === 'full' ? 'jackpot' : 'win');
           buzz(p === 'full');
           coinBurst(cardsBox.children[ci], p === 'full' ? 50 : 12);
-          resultBanner(result, `${p === 'full' ? 'BINGO! ' : ''}${PRIZE_NAMES[p]} +${fmt(amount)}`, 'win');
+          resultBanner(result, `${p === 'full' ? tr('BINGO! ', '¡BINGO! ') : ''}${PRIZE_NAMES()[p]} +${fmt(amount)}`, 'win');
           render();
         }
       });
       if (cards.every((_, ci) => paidPrizes[ci].has('full'))) break;
     }
     countPlay('bingo', won > cost);
-    resultBanner(result, won ? `Game over · you won ${fmt(won)}` : 'Game over · no prize this time', won > cost ? 'win' : won ? 'push' : 'lose');
+    resultBanner(result, won ? tr(`Game over · you won ${fmt(won)}`, `Fin del juego · ganaste ${fmt(won)}`) : tr('Game over · no prize this time', 'Fin del juego · esta vez sin premio'), won > cost ? 'win' : won ? 'push' : 'lose');
     running = false;
     playBtn.disabled = false;
     price.setEnabled(true);
     count.setEnabled(true);
   }
 
-  const rules = h('button.btn.small', { onclick: () => dialog('Bingo', h('div', {},
-    h('p', {}, `${BALLS_PER_GAME} balls are called. Your cards mark themselves.`),
-    h('p', {}, `Each card pays once per prize, times its price: line (row, column or diagonal) ${PRIZE_PAYS.line}× · four corners ${PRIZE_PAYS.corners}× · two lines ${PRIZE_PAYS.twoLines}× · full card ${PRIZE_PAYS.full}×.`))) }, 'Rules');
+  const rules = h('button.btn.small', { onclick: bingoHowTo }, tr('How to play', 'Cómo jugar'));
 
   root.classList.add('bingo');
   root.append(topBar('Bingo'),
