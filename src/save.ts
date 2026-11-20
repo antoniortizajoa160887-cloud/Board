@@ -7,7 +7,7 @@ export interface Settings { sound: boolean; music: boolean; vibration: boolean; 
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
-export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] }; tycoon: TycoonGame | null }
+export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] }; tycoon: TycoonGame | null; pokerBingo: { boards: number[] } }
 
 const KEY = 'lucky-lagoon-v1';
 
@@ -19,7 +19,15 @@ function fresh(): Profile {
     colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
     zip: { stars: [] },
     tycoon: null,
+    pokerBingo: { boards: [1, 2] },
   };
+}
+
+/** Saved Poker Bingo board numbers (1–12, up to 4), or null when the saved value is unusable. */
+function pickedBoards(v: unknown): number[] | null {
+  if (!Array.isArray(v)) return null;
+  const ok = [...new Set(v.filter(n => Number.isInteger(n) && n >= 1 && n <= 12))].slice(0, 4);
+  return ok.length ? ok : null;
 }
 
 function load(): Profile {
@@ -35,6 +43,7 @@ function load(): Profile {
       colors: { rules: { ...base.colors.rules, ...p.colors?.rules }, opponents: p.colors?.opponents ?? base.colors.opponents },
       zip: { stars: Array.isArray(p.zip?.stars) ? p.zip!.stars : [] },
       tycoon: p.tycoon && Array.isArray(p.tycoon.players) && Array.isArray(p.tycoon.deeds) ? { ...p.tycoon, events: [] } : null,
+      pokerBingo: { boards: pickedBoards(p.pokerBingo?.boards) ?? base.pokerBingo.boards },
     };
   } catch {
     return base;

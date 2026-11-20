@@ -584,3 +584,9 @@ button:disabled { opacity: .45; cursor: default; }
 .pb-paybox { font-size: 13px; color: var(--muted); text-align: center; }
 .pb-paybox summary { cursor: pointer; font-weight: 800; color: var(--gold2); }
 .pb-pays { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; padding-top: 6px; }
+.pb-num { font-weight: 900; font-size: 12px; color: var(--gold2); text-align: center; margin: -1px 0 3px; letter-spacing: .5px; }
+.pb-picker { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; align-items: center; width: min(100%, 520px); margin: 0 auto; }
+.pb-pick-label { width: 100%; text-align: center; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.pb-pick { min-width: 40px; height: 40px; border-radius: 10px; border: 2px solid #f5c54255; background: #0b1430; color: var(--gold2); font-weight: 900; font-size: 15px; }
+.pb-pick.on { background: linear-gradient(#ffd96a, #c9931f); color: #141a33; border-color: var(--gold); box-shadow: 0 0 10px #f5c54288; }
+.pb-pick:disabled { opacity: .6; }
