@@ -1,11 +1,12 @@
 import { JACKPOT_SEED } from './core/slots';
 import { START_CHIPS, type Wallet } from './core/wallet';
+import { DEFAULT_RULES, type Rules } from './core/colors';
 
 export interface Settings { sound: boolean; music: boolean; vibration: boolean }
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
-export interface Profile { wallet: Wallet; settings: Settings; stats: Stats }
+export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number } }
 
 const KEY = 'lucky-lagoon-v1';
 
@@ -14,6 +15,7 @@ function fresh(): Profile {
     wallet: { chips: START_CHIPS, lastDaily: '', lastRefill: 0, jackpot: JACKPOT_SEED, biggestWin: 0 },
     settings: { sound: true, music: true, vibration: true },
     stats: { played: {}, won: {} },
+    colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
   };
 }
 
@@ -27,6 +29,7 @@ function load(): Profile {
       wallet: { ...base.wallet, ...p.wallet },
       settings: { ...base.settings, ...p.settings },
       stats: { played: { ...p.stats?.played }, won: { ...p.stats?.won } },
+      colors: { rules: { ...base.colors.rules, ...p.colors?.rules }, opponents: p.colors?.opponents ?? base.colors.opponents },
     };
   } catch {
     return base;

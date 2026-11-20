@@ -11,7 +11,7 @@ Everything is played with **play chips**: they have no money value, can't be bou
   - **Poker**: Video Poker (jacks or better, hold and draw). Hold'em is coming.
   - **Bingo & Keno**: Bingo with up to 4 cards (line, four corners, two lines, full card). Keno is coming.
 - **Arcade**: Zip, a speedy otter platformer (coming).
-- **Board & Cards**: Harbor Tycoon (property trading) and Crazy Colors (a color-matching card game with house rules) are coming.
+- **Board & Cards**: Crazy Colors, a color-matching card game against 1 to 3 computer players (Pip, Coral and Moe), with house rules you can turn on: stacking +2 cards, Seven-Zero hand swaps, jump-in, and draw until match. Win the round and the cards left in the other hands become chips. Harbor Tycoon (property trading) is coming.
 - **Stats**: chips, biggest win, jackpot and a per-game record.
 
 Shared across the hall: one chip balance, a daily bonus of 1,000 chips and a free refill when you drop under 100 (once an hour).
@@ -27,7 +27,7 @@ npm test           # rules and payout tests
 npm run build      # production web build in dist/
 ```
 
-Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, wallet); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
+Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, colors, wallet); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
 
 ## Android
 
