@@ -1,136 +1,259 @@
 import { sfx } from '../audio';
 import { isRed, rankLabel, SUIT_GLYPH, type Card } from '../core/cards';
-import { CATEGORY_EN, CATEGORY_ES } from '../core/holdem';
-import { BOARD_COUNT, BOARDS, CALLS, CENTER, CORNERS, callOrder, cardKey, judge, PAY } from '../core/pokerBingo';
+import { CATEGORY_EN, CATEGORY_ES, categoryOf, score5 } from '../core/holdem';
+import { BOARD_COUNT, BOARDS, boardState, botBoards, CENTER, CORNERS, cardKey, MAX_BOARDS, payouts, playRound, potSize, SET_SIZE, type Pot, type Seat } from '../core/pokerBingo';
 import { makeRng } from '../core/rng';
 import { lang, tr } from '../i18n';
 import { buzz } from '../platform';
 import { addChips, countPlay, profile, save } from '../save';
 import { cardSvg } from '../ui/art';
+import { img, olliePath, sayCard, sayPot } from '../ui/assets';
+import { BOTS } from '../ui/colorsArt';
 import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
 import { topBar } from '../ui/shell';
 import { howToPlay } from './howto';
 import { betStepper, cantAfford, resultBanner } from './kit';
 
-const PRICES = [5, 10, 25, 50, 100, 250];
+const ANTES = [1, 5, 10, 25, 50, 100];
 const handName = (c: number) => (lang() === 'es' ? CATEGORY_ES[c] : CATEGORY_EN[c]);
+const RANK_EN = ['', '', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace'];
+const RANK_ES = ['', '', 'Dos', 'Tres', 'Cuatro', 'Cinco', 'Seis', 'Siete', 'Ocho', 'Nueve', 'Diez', 'Jota', 'Reina', 'Rey', 'As'];
+const SUIT_EN: Record<string, string> = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
+const SUIT_ES: Record<string, string> = { C: 'tréboles', D: 'diamantes', H: 'corazones', S: 'picas' };
+const cardName = (c: Card) => (lang() === 'es' ? `${RANK_ES[c.rank]} de ${SUIT_ES[c.suit]}` : `${RANK_EN[c.rank]} of ${SUIT_EN[c.suit]}`);
+const potName = (p: Pot) => ({
+  center: tr('Center', 'Centro'), corners: tr('Four corners', 'Cuatro esquinas'), five: tr('Five in a row', 'Cinco en línea'), poker: tr('Poker hand', 'Mano de póquer'),
+})[p];
 
 export const pokerBingoHowTo = () => howToPlay(tr('How to play Poker Bingo', 'Cómo jugar al Bingo Póquer'), [
-  [tr('The idea', 'La idea'), tr('Bingo with playing cards. Each board has 25 cards in a 5 × 5 grid. Cards are called from one shuffled deck, and every called card on your board gets covered with a chip.', 'Bingo con cartas de póquer. Cada tablero tiene 25 cartas en una cuadrícula de 5 × 5. Se cantan cartas de una baraja mezclada, y cada carta cantada que está en tu tablero se cubre con una ficha.')],
-  [tr('The boards', 'Los tableros'), tr(`Like the printed boards of the boxed game, there are ${BOARD_COUNT} numbered boards and they never change. Every row and column on a board is already a poker hand, and each board has the same mix of hands, so no board is luckier than another. Keep your favourite numbers: the game remembers them.`, `Como los tableros impresos del juego de caja, hay ${BOARD_COUNT} tableros numerados y nunca cambian. Cada fila y columna de un tablero ya es una mano de póquer, y todos tienen la misma mezcla de manos, así que ningún tablero tiene más suerte que otro. Quédate con tus números favoritos: el juego los recuerda.`)],
-  [tr('Get ready', 'Prepárate'), tr(`Tap the numbers of up to 4 BOARDS, choose the PRICE of each, then tap PLAY. ${CALLS} cards (half the deck) are called each game.`, `Toca los números de hasta 4 TABLEROS, elige el PRECIO de cada uno y toca JUGAR. En cada partida se cantan ${CALLS} cartas (media baraja).`)],
-  [tr('Center', 'Centro'), tr('The middle card is called: you win a little back.', 'Si cantan la carta del centro: recuperas un poco.')],
-  [tr('Four corners', 'Cuatro esquinas'), tr(`All four corner cards are called: ${PAY.corners}× the board price.`, `Si cantan las cuatro esquinas: ${PAY.corners}× el precio del tablero.`)],
-  [tr('Five in a row', 'Cinco en línea'), tr('Cover a whole row or column and it pays by the POKER HAND those five cards make. A pair gives your price back; the better the hand, the bigger the prize. Only your best line counts.', 'Cubre una fila o columna completa y paga según la MANO DE PÓQUER que forman esas cinco cartas. Una pareja te devuelve el precio; cuanto mejor la mano, mayor el premio. Solo cuenta tu mejor línea.')],
+  [tr('The idea', 'La idea'), tr('Bingo with playing cards, at a table with Ollie as the dealer and up to three other players. Each board has 25 cards in a 5 × 5 grid. Ollie turns cards from a shuffled deck and calls them out, and every called card on a board gets covered with a chip.', 'Bingo con cartas de póquer, en una mesa con Ollie como crupier y hasta tres jugadores más. Cada tablero tiene 25 cartas en una cuadrícula de 5 × 5. Ollie voltea cartas de una baraja mezclada y las canta, y cada carta cantada que está en un tablero se cubre con una ficha.')],
+  [tr('The boards', 'Los tableros'), tr(`There are ${BOARD_COUNT} numbered boards in two sets of ${SET_SIZE}, and they never change. Pick up to ${MAX_BOARDS}: tap a number to add it or take it out. Your favourites are remembered. The other players take boards nobody is using.`, `Hay ${BOARD_COUNT} tableros numerados en dos juegos de ${SET_SIZE}, y nunca cambian. Elige hasta ${MAX_BOARDS}: toca un número para ponerlo o quitarlo. Tus favoritos se recuerdan. Los demás jugadores toman tableros que nadie usa.`)],
+  [tr('The four pots', 'Los cuatro botes'), tr('Before the cards are turned, every board at the table puts the ANTE into each of the four pots: Center, Four corners, Five in a row and Poker hand. More boards cost more, and give you more chances.', 'Antes de voltear las cartas, cada tablero de la mesa pone la APUESTA en cada uno de los cuatro botes: Centro, Cuatro esquinas, Cinco en línea y Mano de póquer. Más tableros cuestan más, y dan más oportunidades.')],
+  [tr('Center', 'Centro'), tr('The first player to cover the middle card of a board wins the Center pot.', 'El primero en cubrir la carta del medio de un tablero gana el bote del Centro.')],
+  [tr('Four corners', 'Cuatro esquinas'), tr('The first player to cover all four corner cards of one board wins the Corners pot.', 'El primero en cubrir las cuatro esquinas de un mismo tablero gana el bote de Esquinas.')],
+  [tr('Five in a row', 'Cinco en línea'), tr('The first player to cover five in a row, across, down or corner to corner, wins this pot and the calling stops.', 'El primero en cubrir cinco en línea, horizontal, vertical o de esquina a esquina, gana este bote y se dejan de cantar cartas.')],
+  [tr('Poker hand', 'Mano de póquer'), tr('Then Ollie deals every player five cards from a fresh deck. The best poker hand wins the Poker pot. A pot nobody won (center or corners) is added to the Poker pot.', 'Luego Ollie reparte cinco cartas a cada jugador de otra baraja. La mejor mano de póquer gana el bote de Póquer. Un bote que nadie ganó (centro o esquinas) se suma al bote de Póquer.')],
+  [tr('Ties', 'Empates'), tr('If two players win a pot on the same card, or have equal poker hands, they split it.', 'Si dos jugadores ganan un bote con la misma carta, o tienen manos de póquer iguales, se lo reparten.')],
   [tr('Poker hands, best to worst', 'Manos de póquer, de mejor a peor'), tr('Straight flush · four of a kind · full house (3 + 2) · flush (same suit) · straight (in a row) · three of a kind · two pair · pair · high card.', 'Escalera de color · póker (4 iguales) · full (3 + 2) · color (mismo palo) · escalera (seguidas) · trío · doble pareja · pareja · carta alta.')],
-  [tr('Beginner tip', 'Consejo para empezar'), tr('Just watch the cards fall! Two cheap boards give you more chances than one expensive one.', '¡Solo mira caer las cartas! Dos tableros baratos te dan más oportunidades que uno caro.')],
+  [tr('Beginner tip', 'Consejo para empezar'), tr('Start with one or two boards and a small ante, and just listen to Ollie call the cards. Covering is automatic.', 'Empieza con uno o dos tableros y una apuesta pequeña, y escucha a Ollie cantar las cartas. Las fichas se ponen solas.')],
 ]);
 
 const mini = (c: Card) => h('span.pb-face' + (isRed(c) ? '.red' : ''), {}, rankLabel(c.rank), h('small', {}, SUIT_GLYPH[c.suit]));
 
 export const pokerBingoScreen: Screen = root => {
   const rng = makeRng();
-  let alive = true, running = false;
-  let picked = [...profile.pokerBingo.boards];
-  let boards: Card[][] = picked.map(n => BOARDS[n - 1]);
+  const pb = profile.pokerBingo;
+  let alive = true, running = false, unpaid = 0;
+  let picked = [...pb.boards];
   let called = new Set<string>();
-  const callEl = h('div.pb-call', { html: cardSvg({ rank: 14, suit: 'S' }, true) });
-  const countEl = h('div.ball-count', {}, `0 / ${CALLS}`);
-  const recent = h('div.pb-recent');
+  let seats: Seat[] = [{ boards: picked }];
+  let fast = false;
+  const won: Record<Pot, number[]> = { center: [], corners: [], five: [], poker: [] };
+  const who = (i: number) => (i === 0 ? tr('You', 'Tú') : BOTS[i - 1].name);
+  const pic = (i: number) => (i === 0 ? 'chars/ollie.webp' : BOTS[i - 1].pic);
+
+  // Dealer area: Ollie, the deck and the card just turned.
+  const dealer = img(olliePath('deal'), 'pb-dealer dealer', 'Ollie');
+  const flip = h('div.pb-flip', {}, h('div.pb-flip-in', { html: cardSvg(null, true) }));
+  const callText = h('div.pb-calltext', {}, tr('Pick your boards', 'Elige tus tableros'));
+  const countEl = h('div.pb-count');
+  const potsEl = h('div.pb-pots');
+  const botsEl = h('div.pb-bots');
+  const handsEl = h('div.pb-hands');
   const boardsBox = h('div.pb-boards');
-  const result = h('div.result', {}, tr('Pick up to 4 boards and their price, then play', 'Elige hasta 4 tableros y su precio, y juega'));
-  const price = betStepper(PRICES, 10, tr('Board price', 'Precio'));
+  const result = h('div.result', {}, tr('Pick up to 4 boards, then tap PLAY', 'Elige hasta 4 tableros y toca JUGAR'));
+  const ante = betStepper(ANTES, pb.ante, tr('Ante', 'Apuesta'), v => { pb.ante = v; save(); renderCost(); });
+  const costEl = h('div.pb-cost');
   const playBtn = h('button.btn.primary.wide', { onclick: () => void play() }, tr('PLAY', 'JUGAR'));
+  const speedBtn = h('button.btn.small', { onclick: () => { fast = !fast; speedBtn.textContent = speedLabel(); } });
+  const speedLabel = () => (fast ? tr('Speed: fast', 'Velocidad: rápida') : tr('Speed: normal', 'Velocidad: normal'));
+  speedBtn.textContent = speedLabel();
+  const oppSeg = h('div.seg');
   const picker = h('div.pb-picker');
+  const setup = h('div.pb-setup', {}, picker, h('div.pb-opp', {}, h('span', {}, tr('Players', 'Jugadores')), oppSeg), h('div.controls', {}, ante.el), costEl);
+
+  function renderCost() {
+    const per = ante.get() * 4 * picked.length;
+    costEl.textContent = tr(`${picked.length} board${picked.length > 1 ? 's' : ''} × 4 pots × ${fmt(ante.get())} = ${fmt(per)}`, `${picked.length} tablero${picked.length > 1 ? 's' : ''} × 4 botes × ${fmt(ante.get())} = ${fmt(per)}`);
+  }
+
+  function renderOpp() {
+    oppSeg.replaceChildren(...[1, 2, 3].map(n => h('button.seg-btn' + (pb.opponents === n ? '.on' : ''), {
+      disabled: running, onclick: () => { pb.opponents = n; save(); sfx('click'); renderOpp(); renderBots(); },
+    }, h('span.pb-opp-faces', {}, ...BOTS.slice(0, n).map(b => img(b.pic, 'pb-opp-face', b.name))))));
+  }
 
   function renderPicker() {
-    picker.replaceChildren(h('span.pb-pick-label', {}, tr('Boards', 'Tableros')), ...Array.from({ length: BOARD_COUNT }, (_, i) => {
-      const n = i + 1, on = picked.includes(n);
-      return h('button.pb-pick' + (on ? '.on' : ''), { disabled: running, 'aria-pressed': String(on), onclick: () => toggleBoard(n) }, String(n));
-    }));
+    const set = (k: number) => h('div.pb-set', {},
+      h('span.pb-pick-label', {}, tr(`Set ${k + 1}`, `Juego ${k + 1}`)),
+      ...Array.from({ length: SET_SIZE }, (_, i) => {
+        const n = k * SET_SIZE + i + 1, on = picked.includes(n);
+        return h('button.pb-pick' + (on ? '.on' : ''), { disabled: running, 'aria-pressed': String(on), onclick: () => toggleBoard(n) }, String(n));
+      }));
+    picker.replaceChildren(set(0), set(1));
   }
 
   function toggleBoard(n: number) {
     if (running) return;
     if (picked.includes(n)) { if (picked.length === 1) return; picked = picked.filter(x => x !== n); }
-    else if (picked.length >= 4) { resultBanner(result, tr('Up to 4 boards: tap one to take it out first', 'Hasta 4 tableros: toca uno para quitarlo primero'), 'info'); return; }
+    else if (picked.length >= MAX_BOARDS) { resultBanner(result, tr('Up to 4 boards: tap one to take it out first', 'Hasta 4 tableros: toca uno para quitarlo primero'), 'info'); return; }
     else picked = [...picked, n].sort((a, b) => a - b);
-    profile.pokerBingo.boards = picked; save();
-    boards = picked.map(x => BOARDS[x - 1]);
+    pb.boards = picked; save();
+    seats = [{ boards: picked }];
     called = new Set();
     sfx('chip');
-    renderPicker(); render();
+    renderPicker(); renderCost(); renderBoards(); renderBots();
   }
 
-  function render(just?: string, lines: (number[] | null)[] = []) {
-    boardsBox.dataset.n = String(boards.length);
-    boardsBox.replaceChildren(...boards.map((b, bi) => h('div.pb-board', {},
-      h('div.pb-num', {}, `#${picked[bi]}`),
-      h('div.pb-grid', {}, ...b.map((c, i) => {
+  function renderPots(size = 0) {
+    potsEl.replaceChildren(...(['center', 'corners', 'five', 'poker'] as Pot[]).map(p => {
+      const w = won[p];
+      return h('div.pb-pot.' + p + (w.length ? '.won' : ''), {},
+        h('div.pb-pot-name', {}, potName(p)),
+        h('div.pb-pot-amt', {}, size ? fmt(size) : '—'),
+        w.length ? h('div.pb-pot-who', {}, ...w.map(i => img(pic(i), 'pb-pot-face', who(i)))) : null);
+    }));
+  }
+
+  function renderBots() {
+    const n = running ? seats.length - 1 : pb.opponents;
+    botsEl.replaceChildren(...Array.from({ length: n }, (_, k) => {
+      const b = BOTS[k], s = seats[k + 1];
+      const best = s ? Math.max(...s.boards.map(x => boardState(BOARDS[x - 1], called).best)) : 0;
+      return h('div.pb-bot', { style: `--ring:${b.color}` },
+        img(b.pic, 'pb-bot-img', b.name),
+        h('div.pb-bot-name', {}, b.name),
+        h('div.pb-bot-boards', {}, s ? s.boards.map(x => `#${x}`).join(' ') : ''),
+        h('div.pb-bot-meter', {}, ...[0, 1, 2, 3, 4].map(i => h('i' + (i < best ? '.on' : '')))));
+    }));
+  }
+
+  function renderBoards(just?: string, fiveLine?: { board: number; line: number[] }) {
+    boardsBox.dataset.n = String(picked.length);
+    boardsBox.replaceChildren(...picked.map(n => h('div.pb-board', {},
+      h('div.pb-num', {}, `#${n}`),
+      h('div.pb-grid', {}, ...BOARDS[n - 1].map((c, i) => {
         const k = cardKey(c);
-        const el = h('div.pb-cell' + (called.has(k) ? '.on' : '') + (i === CENTER ? '.center' : '') + (CORNERS.includes(i) ? '.corner' : '') + (lines[bi]?.includes(i) ? '.line' : ''), {}, mini(c));
+        const line = fiveLine && fiveLine.board === n && fiveLine.line.includes(i);
+        const el = h('div.pb-cell' + (called.has(k) ? '.on' : '') + (i === CENTER ? '.center' : '') + (CORNERS.includes(i) ? '.corner' : '') + (line ? '.line' : ''), {}, mini(c));
         if (k === just) el.classList.add('daub');
         return el;
       })))));
   }
 
+  function poseDealer(p: 'deal' | 'cheer' | 'shrug' | 'wave') { dealer.src = img(olliePath(p)).src; }
+
   async function play() {
     if (running) return;
-    const cost = price.get() * boards.length;
+    const a = ante.get();
+    const cost = a * 4 * picked.length;
     if (cantAfford(cost)) return;
     addChips(-cost);
-    running = true; playBtn.disabled = true; price.setEnabled(false); renderPicker();
+    running = true; playBtn.disabled = true; ante.setEnabled(false);
+    seats = [{ boards: picked }, ...botBoards(rng, picked, pb.opponents).map(boards => ({ boards }))];
+    const round = playRound(rng, seats);
+    const pay = payouts(round, seats, a);
+    unpaid = pay[0];
+    const size = potSize(seats, a);
+    (Object.keys(won) as Pot[]).forEach(p => { won[p] = []; });
     called = new Set();
-    recent.replaceChildren();
-    render();
-    resultBanner(result, tr('Here come the cards!', '¡Ahí vienen las cartas!'), 'info');
-    const order = callOrder(rng);
-    for (let i = 0; i < order.length; i++) {
+    handsEl.replaceChildren(); handsEl.hidden = true;
+    setup.hidden = true;
+    renderOpp(); renderPicker(); renderPots(size); renderBots(); renderBoards();
+    poseDealer('deal');
+    resultBanner(result, tr('Ollie is shuffling…', 'Ollie está mezclando…'), 'info');
+    sfx('card'); await sleep(900);
+    for (let i = 0; i < round.calls.length; i++) {
       if (!alive) return;
-      const c = order[i], k = cardKey(c);
+      const { card, won: w } = round.calls[i], k = cardKey(card);
       called.add(k);
-      callEl.innerHTML = cardSvg(c);
-      callEl.classList.remove('deal-in'); void callEl.offsetWidth; callEl.classList.add('deal-in');
-      countEl.textContent = `${i + 1} / ${CALLS}`;
-      recent.prepend(h('span.pb-chip', {}, mini(c)));
-      while (recent.children.length > 8) recent.lastChild!.remove();
-      const onBoard = boards.some(b => b.some(x => cardKey(x) === k));
-      sfx(onBoard ? 'daub' : 'card');
-      render(k);
-      await sleep(onBoard ? 420 : 260);
+      const inner = flip.firstElementChild as HTMLElement;
+      inner.innerHTML = cardSvg(card);
+      flip.classList.remove('turn'); void flip.offsetWidth; flip.classList.add('turn');
+      callText.textContent = cardName(card);
+      countEl.textContent = tr(`Card ${i + 1}`, `Carta ${i + 1}`);
+      sfx('card');
+      if (!fast) sayCard(card.rank, card.suit);
+      const mine = picked.some(n => BOARDS[n - 1].some(c => cardKey(c) === k));
+      const pots = (['center', 'corners', 'five'] as const).filter(p => w[p]);
+      let fiveLine: { board: number; line: number[] } | undefined;
+      if (w.five?.includes(0)) {
+        const n = picked.find(x => boardState(BOARDS[x - 1], called).five)!;
+        fiveLine = { board: n, line: boardState(BOARDS[n - 1], called).five! };
+      }
+      await sleep(fast ? 250 : 650);
+      if (!alive) return;
+      if (mine) sfx('daub');
+      renderBoards(k, fiveLine); renderBots();
+      for (const p of pots) {
+        won[p] = w[p]!;
+        renderPots(size);
+        const iWon = w[p]!.includes(0);
+        resultBanner(result, `${potName(p)}: ${w[p]!.map(who).join(' + ')}`, iWon ? 'win' : 'info');
+        poseDealer(iWon ? 'cheer' : 'wave');
+        if (iWon) { sfx('win'); coinBurst(potsEl.querySelector('.pb-pot.' + p) as HTMLElement, 14); buzz(); }
+        await sleep(fast ? 300 : 500);
+        sayPot(p);
+        await sleep(fast ? 700 : 1300);
+        if (!alive) return;
+        poseDealer('deal');
+      }
+      await sleep(fast ? 250 : 750);
     }
-    const results = boards.map(b => judge(b, called));
-    render(undefined, results.map(r => r.line));
-    const bet = price.get();
-    const won = results.reduce((a, r) => a + Math.round(r.pay * bet), 0);
-    if (won) addChips(won);
-    countPlay('pokerbingo', won > cost);
-    const parts: string[] = [];
-    results.forEach((r, i) => {
-      const bits = [r.hand !== null ? handName(r.hand) : '', r.corners ? tr('corners', 'esquinas') : '', r.center ? tr('center', 'centro') : ''].filter(Boolean);
-      if (bits.length) parts.push(`${boards.length > 1 ? `#${picked[i]} ` : ''}${bits.join(' + ')}`);
-    });
-    if (won > cost) {
-      resultBanner(result, `${parts.join(' · ')}  +${fmt(won)}`, 'win');
-      const big = results.some(r => r.hand !== null && r.hand >= 4) || won >= cost * 5;
-      sfx(big ? 'jackpot' : 'win'); coinBurst(boardsBox, big ? 40 : 16); buzz(big);
-    } else if (won) { resultBanner(result, `${parts.join(' · ')}  +${fmt(won)}`, 'push'); sfx('chip'); }
-    else { resultBanner(result, tr('No prize this time', 'Esta vez sin premio'), 'lose'); sfx('lose'); }
-    running = false; playBtn.disabled = false; price.setEnabled(true); renderPicker();
+    if (!alive) return;
+    // The poker hands, from a fresh deck.
+    sayPot('poker');
+    resultBanner(result, tr('Poker hands!', '¡Manos de póquer!'), 'info');
+    handsEl.hidden = false;
+    handsEl.replaceChildren();
+    for (let s = 0; s < seats.length; s++) {
+      const hand = round.hands[s];
+      const row = h('div.pb-hand' + (round.winners.poker.includes(s) ? '.best' : ''), {},
+        img(pic(s), 'pb-hand-face', who(s)), h('div.pb-hand-name', {}, who(s)),
+        h('div.pb-hand-cards', {}, ...hand.map(c => h('div.pb-hand-card.deal-in', { html: cardSvg(c) }))),
+        h('div.pb-hand-cat', {}, handName(categoryOf(score5(hand)))));
+      row.classList.remove('best');
+      handsEl.append(row);
+      sfx('card');
+      await sleep(fast ? 250 : 600);
+      if (!alive) return;
+    }
+    await sleep(500);
+    round.winners.poker.forEach(s => handsEl.children[s].classList.add('best'));
+    won.poker = round.winners.poker;
+    renderPots(size);
+    // Pay out.
+    unpaid = 0;
+    if (pay[0]) addChips(pay[0]);
+    countPlay('pokerbingo', pay[0] > cost);
+    const lostPots = (['center', 'corners'] as const).filter(p => !round.winners[p].length);
+    const extra = lostPots.length ? tr(` (${lostPots.map(potName).join(' and ')} went to the poker pot)`, ` (${lostPots.map(potName).join(' y ')} pasó al bote de póquer)`) : '';
+    if (pay[0] > cost) {
+      resultBanner(result, tr(`You won ${fmt(pay[0])}!`, `¡Ganaste ${fmt(pay[0])}!`) + extra, 'win');
+      poseDealer('cheer'); sfx(pay[0] >= cost * 4 ? 'bigwin' : 'win'); coinBurst(boardsBox, 24); buzz(true);
+    } else if (pay[0]) {
+      resultBanner(result, tr(`You got back ${fmt(pay[0])} of ${fmt(cost)}`, `Recuperaste ${fmt(pay[0])} de ${fmt(cost)}`) + extra, 'push');
+      sfx('chip');
+    } else {
+      resultBanner(result, tr(`${round.winners.poker.map(who).join(' + ')} took the poker pot. Next game!`, `${round.winners.poker.map(who).join(' + ')} se llevó el bote de póquer. ¡Otra partida!`), 'lose');
+      poseDealer('shrug'); sfx('lose');
+    }
+    running = false; playBtn.disabled = false; ante.setEnabled(true);
+    playBtn.textContent = tr('PLAY AGAIN', 'JUGAR OTRA');
+    setup.hidden = false;
+    renderOpp(); renderPicker();
   }
-
-  const pays = h('div.pb-pays', {},
-    ...PAY.line.map((m, c) => [handName(c), m] as [string, number]).filter(([, m]) => m > 0).reverse().map(([n, m]) => h('span', {}, `${n} ×${m}`)),
-    h('span', {}, tr(`Corners ×${PAY.corners}`, `Esquinas ×${PAY.corners}`)), h('span', {}, tr(`Center ×${PAY.center}`, `Centro ×${PAY.center}`)));
 
   root.classList.add('pokerbingo');
   root.append(topBar(tr('Poker Bingo', 'Bingo Póquer')),
-    h('div.pb-top', {}, callEl, h('div.pb-side', {}, countEl, recent)),
-    boardsBox, result, picker,
-    h('div.controls', {}, price.el),
-    h('div.controls', {}, h('button.btn.small', { onclick: pokerBingoHowTo }, tr('How to play', 'Cómo jugar')), playBtn),
-    h('details.pb-paybox', {}, h('summary', {}, tr('Prizes (× board price)', 'Premios (× precio del tablero)')), pays));
-  renderPicker(); render();
-  return () => { alive = false; };
+    h('div.pb-table', {},
+      h('div.pb-dealer-row', {}, dealer, h('div.pb-deck', {}, h('div.pb-deck-back', { html: cardSvg(null, true) }), flip), h('div.pb-callbox', {}, countEl, callText)),
+      potsEl, botsEl),
+    handsEl, boardsBox, result,
+    setup,
+    h('div.controls', {}, h('button.btn.small', { onclick: pokerBingoHowTo }, tr('How to play', 'Cómo jugar')), speedBtn, playBtn));
+  handsEl.hidden = true;
+  renderOpp(); renderPicker(); renderCost(); renderPots(); renderBots(); renderBoards();
+  return () => { alive = false; if (unpaid) addChips(unpaid); };
 };

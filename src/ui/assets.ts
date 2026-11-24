@@ -71,3 +71,13 @@ export function sayCall(n: number) {
 }
 
 export function stopVoice() { current?.pause(); current = null; }
+
+/** The dealer calls a playing card, e.g. "Seven of hearts" (rank 2-14, suit C D H S). */
+export function sayCard(rank: number, suit: string) {
+  play(`voice/${lang()}/c/${rank}${suit}.mp3`, { interrupt: true });
+}
+
+/** A Poker Bingo pot is won: center, corners, five in a row, or the poker hands. */
+export function sayPot(pot: 'center' | 'corners' | 'five' | 'poker') {
+  play(`voice/${lang()}/pot/${pot}.mp3`, { interrupt: true });
+}

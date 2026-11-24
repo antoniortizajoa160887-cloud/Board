@@ -18,7 +18,12 @@ function ensure(): AudioContext | null {
   musicBus = ctx.createGain();
   sfxBus = ctx.createGain();
   musicBus.connect(master);
-  sfxBus.connect(master);
+  // Effects go through a gentle low-pass and a soft compressor so nothing sounds sharp or sudden.
+  const soften = ctx.createBiquadFilter();
+  soften.type = 'lowpass'; soften.frequency.value = 3200; soften.Q.value = 0.5;
+  const comp = ctx.createDynamicsCompressor();
+  comp.threshold.value = -24; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.2;
+  sfxBus.connect(soften).connect(comp).connect(master);
   applyVolumes();
   return ctx;
 }
@@ -26,7 +31,7 @@ function ensure(): AudioContext | null {
 export function applyVolumes() {
   if (!ctx) return;
   musicBus.gain.setTargetAtTime(profile.settings.music ? 0.22 : 0, ctx.currentTime, 0.2);
-  sfxBus.gain.setTargetAtTime(profile.settings.sound ? 0.7 : 0, ctx.currentTime, 0.05);
+  sfxBus.gain.setTargetAtTime(profile.settings.sound ? 0.9 * (profile.settings.sfxVolume ?? 0.5) : 0, ctx.currentTime, 0.05);
 }
 
 export function unlockAudio() {
@@ -44,7 +49,7 @@ function tone(freq: number, start: number, dur: number, o: { type?: OscillatorTy
   osc.frequency.setValueAtTime(freq, start);
   if (o.glideTo) osc.frequency.exponentialRampToValueAtTime(o.glideTo, start + dur);
   const g = c.createGain();
-  const a = o.attack ?? 0.005;
+  const a = o.attack ?? 0.012;
   g.gain.setValueAtTime(0.0001, start);
   g.gain.exponentialRampToValueAtTime(o.gain ?? 0.3, start + a);
   g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
@@ -58,7 +63,8 @@ function noise(start: number, dur: number, gain = 0.2, freq = 3000) {
   const len = Math.floor(c.sampleRate * dur);
   const buf = c.createBuffer(1, len, c.sampleRate);
   const d = buf.getChannelData(0);
-  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  // Soft fade in and out, so the noise never clicks.
+  for (let i = 0; i < len; i++) { const x = i / len; d[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * Math.min(1, x * 4)) ** 2 * (1 - x) ** 2; }
   const src = c.createBufferSource();
   src.buffer = buf;
   const f = c.createBiquadFilter();
@@ -79,27 +85,27 @@ export function sfx(name: Sfx) {
   const t = c.currentTime;
   switch (name) {
     case 'chip':
-      tone(2400, t, 0.06, { type: 'triangle', gain: 0.2 });
-      tone(3100, t + 0.03, 0.08, { type: 'triangle', gain: 0.15 });
+      tone(1500, t, 0.07, { type: 'sine', gain: 0.12 });
+      tone(1900, t + 0.03, 0.09, { type: 'sine', gain: 0.08 });
       break;
-    case 'card': noise(t, 0.09, 0.35, 2200); break;
-    case 'click': tone(900, t, 0.05, { type: 'square', gain: 0.06 }); break;
+    case 'card': noise(t, 0.12, 0.12, 1100); tone(260, t, 0.08, { type: 'sine', gain: 0.06, glideTo: 180 }); break;
+    case 'click': tone(700, t, 0.06, { type: 'sine', gain: 0.07 }); break;
     case 'reel': noise(t, 0.05, 0.12, 1200); break;
-    case 'stop': tone(180, t, 0.12, { type: 'triangle', gain: 0.35, glideTo: 90 }); break;
-    case 'tick': tone(1800, t, 0.03, { type: 'square', gain: 0.05 }); break;
+    case 'stop': tone(180, t, 0.12, { type: 'triangle', gain: 0.2, glideTo: 90 }); break;
+    case 'tick': tone(1200, t, 0.04, { type: 'sine', gain: 0.05 }); break;
     case 'ball': tone(700, t, 0.25, { type: 'sine', gain: 0.25, glideTo: 1400 }); break;
     case 'daub': tone(520, t, 0.1, { type: 'sine', gain: 0.25, glideTo: 260 }); break;
     case 'lose': tone(330, t, 0.25, { type: 'triangle', gain: 0.18, glideTo: 220 }); break;
-    case 'jump': tone(380, t, 0.14, { type: 'square', gain: 0.07, glideTo: 760 }); break;
-    case 'jet': noise(t, 0.18, 0.18, 900); tone(500, t, 0.16, { type: 'sawtooth', gain: 0.05, glideTo: 1100 }); break;
+    case 'jump': tone(380, t, 0.14, { type: 'triangle', gain: 0.08, glideTo: 760 }); break;
+    case 'jet': noise(t, 0.18, 0.1, 900); tone(500, t, 0.16, { type: 'triangle', gain: 0.05, glideTo: 1100 }); break;
     case 'pearl':
       tone(1568, t, 0.07, { type: 'triangle', gain: 0.16 });
       tone(2093, t + 0.05, 0.12, { type: 'triangle', gain: 0.14 });
       break;
-    case 'stomp': tone(240, t, 0.12, { type: 'square', gain: 0.12, glideTo: 80 }); noise(t, 0.06, 0.2, 600); break;
-    case 'hurt': tone(220, t, 0.3, { type: 'sawtooth', gain: 0.1, glideTo: 70 }); break;
+    case 'stomp': tone(240, t, 0.12, { type: 'triangle', gain: 0.12, glideTo: 80 }); noise(t, 0.08, 0.12, 600); break;
+    case 'hurt': tone(220, t, 0.3, { type: 'triangle', gain: 0.1, glideTo: 70 }); break;
     case 'spring': tone(300, t, 0.3, { type: 'sine', gain: 0.25, glideTo: 1200 }); break;
-    case 'dice': for (let i = 0; i < 6; i++) noise(t + i * 0.06, 0.04, 0.25, 1800 + i * 200); break;
+    case 'dice': for (let i = 0; i < 6; i++) noise(t + i * 0.06, 0.05, 0.12, 1200 + i * 120); break;
     case 'win':
       [72, 76, 79, 84].forEach((n, i) => tone(midi(n), t + i * 0.08, 0.3, { type: 'triangle', gain: 0.22 }));
       break;
@@ -108,7 +114,7 @@ export function sfx(name: Sfx) {
       for (let i = 0; i < 12; i++) tone(2000 + Math.random() * 2000, t + 0.4 + i * 0.05, 0.08, { type: 'triangle', gain: 0.1 });
       break;
     case 'jackpot':
-      for (let r = 0; r < 3; r++) [72, 76, 79, 84, 88].forEach((n, i) => tone(midi(n + r * 2), t + r * 0.5 + i * 0.07, 0.5, { type: 'square', gain: 0.1 }));
+      for (let r = 0; r < 3; r++) [72, 76, 79, 84, 88].forEach((n, i) => tone(midi(n + r * 2), t + r * 0.5 + i * 0.07, 0.5, { type: 'triangle', gain: 0.1 }));
       for (let i = 0; i < 30; i++) tone(2000 + Math.random() * 3000, t + 0.3 + i * 0.05, 0.08, { type: 'triangle', gain: 0.08 });
       break;
   }

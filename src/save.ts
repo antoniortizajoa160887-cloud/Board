@@ -3,30 +3,30 @@ import { START_CHIPS, type Wallet } from './core/wallet';
 import { DEFAULT_RULES, type Rules } from './core/colors';
 import type { Game as TycoonGame } from './core/tycoon';
 
-export interface Settings { sound: boolean; music: boolean; vibration: boolean; voice: boolean; lang: 'en' | 'es' }
+export interface Settings { sound: boolean; music: boolean; vibration: boolean; voice: boolean; sfxVolume: number; lang: 'en' | 'es' }
 
 export interface Stats { played: Record<string, number>; won: Record<string, number> }
 
-export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] }; tycoon: TycoonGame | null; pokerBingo: { boards: number[] } }
+export interface Profile { wallet: Wallet; settings: Settings; stats: Stats; colors: { rules: Rules; opponents: number }; zip: { stars: number[] }; tycoon: TycoonGame | null; pokerBingo: { boards: number[]; opponents: number; ante: number } }
 
 const KEY = 'lucky-lagoon-v1';
 
 function fresh(): Profile {
   return {
     wallet: { chips: START_CHIPS, lastDaily: '', lastRefill: 0, jackpot: JACKPOT_SEED, biggestWin: 0 },
-    settings: { sound: true, music: true, vibration: true, voice: true, lang: typeof navigator !== 'undefined' && /^es/i.test(navigator.language) ? 'es' : 'en' },
+    settings: { sound: true, music: true, vibration: true, voice: true, sfxVolume: 0.5, lang: typeof navigator !== 'undefined' && /^es/i.test(navigator.language) ? 'es' : 'en' },
     stats: { played: {}, won: {} },
     colors: { rules: { ...DEFAULT_RULES }, opponents: 3 },
     zip: { stars: [] },
     tycoon: null,
-    pokerBingo: { boards: [1, 2] },
+    pokerBingo: { boards: [1, 13], opponents: 3, ante: 5 },
   };
 }
 
 /** Saved Poker Bingo board numbers (1–12, up to 4), or null when the saved value is unusable. */
 function pickedBoards(v: unknown): number[] | null {
   if (!Array.isArray(v)) return null;
-  const ok = [...new Set(v.filter(n => Number.isInteger(n) && n >= 1 && n <= 12))].slice(0, 4);
+  const ok = [...new Set(v.filter(n => Number.isInteger(n) && n >= 1 && n <= 24))].slice(0, 4);
   return ok.length ? ok : null;
 }
 
@@ -43,7 +43,7 @@ function load(): Profile {
       colors: { rules: { ...base.colors.rules, ...p.colors?.rules }, opponents: p.colors?.opponents ?? base.colors.opponents },
       zip: { stars: Array.isArray(p.zip?.stars) ? p.zip!.stars : [] },
       tycoon: p.tycoon && Array.isArray(p.tycoon.players) && Array.isArray(p.tycoon.deeds) ? { ...p.tycoon, events: [] } : null,
-      pokerBingo: { boards: pickedBoards(p.pokerBingo?.boards) ?? base.pokerBingo.boards },
+      pokerBingo: { boards: pickedBoards(p.pokerBingo?.boards) ?? base.pokerBingo.boards, opponents: [1, 2, 3].includes(p.pokerBingo?.opponents as number) ? p.pokerBingo!.opponents : 3, ante: Number(p.pokerBingo?.ante) > 0 ? Number(p.pokerBingo!.ante) : 5 },
     };
   } catch {
     return base;
