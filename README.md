@@ -11,12 +11,16 @@ Every screen is in **English and Spanish** (Settings › Language), and every ga
   - **Slots**: Lagoon Slots, 5 reels and 9 lines, wild otter, and a progressive jackpot (five crowns on a line) that grows with every spin.
   - **Table games**: Blackjack 21 (3 to 2, dealer stands on 17, double, split), single-zero Roulette, Baccarat (player, banker, tie, with a bead road) and Craps (pass, don't pass, odds, field, any 7, any craps).
   - **Poker**: Video Poker (jacks or better, hold and draw) and Hold'em against Pip, Coral and Moe (blinds 10/20, side pots).
-  - **Bingo & Keno**: Bingo with up to 4 cards (line, four corners, two lines, full card) and Keno (pick 1 to 10 of 80 numbers).
+  - **Bingo & Keno**: Bingo with up to 4 cards (line, four corners, two lines, full card), Keno (pick 1 to 10 of 80 numbers), Poker Bingo (bingo with playing cards) and **Picture Bingo** (Lotería Laguna): 36 original lagoon picture cards on 4 × 4 boards, called out loud by Ollie in English or Spanish, with a Line pot and a Full board pot.
 - **Arcade**: Zip, an otter platformer with 6 levels, double jump with jet sneakers, pearls, crabs, jellyfish and three stars per level.
 - **Board & Cards**
   - **Harbor Tycoon**: an original property-trading board game around a lagoon harbor (32 spaces, 6 districts, ferries, shipyards, the Fog Bank, the Treasure Cove and the Whirlpool). Buy, build huts and resorts, mortgage and trade against 1 to 3 computer players. The game is saved, so you can leave and come back.
-  - **Checkers** and **Four in a Row** against the computer, Easy, Normal or Hard.
-  - **Crazy Colors**: a color-matching card game against 1 to 3 computer players, with house rules you can turn on: stacking +2 cards, Seven-Zero hand swaps, jump-in, and draw until match.
+  - **Lagoon Race**: a race game in the Parcheesi family for 2 to 4 players: two dice, leave the nest with a 5, capture for 10 extra steps, safe squares, walls and a home lane.
+  - **Checkers**, **Star Checkers** (Chinese checkers on a six-pointed star, 2 or 3 players) and **Four in a Row** against the computer, Easy, Normal or Hard.
+  - **Dominoes**: double-six, 2 to 4 players, Draw or Block game.
+  - **Sink the Fleet**: hide five boats and find Ollie's on a 10 × 10 sea.
+  - **Card games**: **Crazy Colors** (a color-matching card game with house rules: stacking +2 cards, Seven-Zero hand swaps, jump-in, draw until match), **Rummy** (sets and runs, 2 to 4 players), **Go Fish** (books of four, 2 to 4 players) and **Memory Match** (pairs of the lagoon picture cards, 12 to 24 cards, solo for stars or against Ollie).
+  - **Dice games**: **Five Dice** (roll five dice up to three times and fill 13 scoring boxes, 2 to 4 players) and **Pearl Diver** (push your luck to 100 pearls, a 1 loses the dive).
 - **Stats**: chips, biggest win, jackpot and a per-game record.
 
 Shared across the hall: one chip balance, a daily bonus of 1,000 chips and a free refill when you drop under 100 (once an hour).
@@ -32,7 +36,7 @@ npm test           # rules and payout tests
 npm run build      # production web build in dist/
 ```
 
-Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, colors, baccarat, craps, holdem, keno, platformer and its levels, tycoon, checkers, four in a row, wallet); `src/i18n.ts` the language switch (`tr('English', 'Español')` at each string); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
+Code layout: `src/core/` holds the rules with no UI (cards, blackjack, poker, slots, roulette, bingo, colors, baccarat, craps, holdem, keno, platformer and its levels, tycoon, checkers, four in a row, pictures, dominoes, race, stars, dice, memory, fleet, rummy and go fish, wallet); `src/i18n.ts` the language switch (`tr('English', 'Español')` at each string); `src/games/` the play screens; `src/ui/` the hall, top bar, dialogs and all art (drawn in code as SVG in the neon art-deco style); `src/audio.ts` the music and sound, made with Web Audio.
 
 ## Android
 
