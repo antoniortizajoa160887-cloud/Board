@@ -269,9 +269,17 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261124_231238_6e1f9909-c511-4d4f-89fa-f6eb3f7f1994.png",
   "w": 384
  },
+ "icons/g-fleet.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261124_231700_9e24b73c-1ae9-4201-8eef-6cb318a7c0ba.png",
+  "w": 384
+ },
  "icons/g-four.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050345_e3c8e0ac-c869-4dc4-8080-de0c11adb8a7.png",
   "w": 192
+ },
+ "icons/g-gofish.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261124_231700_041cde4f-26b4-4460-9181-c206edf35680.png",
+  "w": 384
  },
  "icons/g-holdem.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050229_610ffecb-6e6c-43ef-a29f-84436272c7d7.png",
@@ -304,6 +312,10 @@
  "icons/g-roulette.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_050053_894ef153-e831-4bc9-8b18-fc91c7cb2027.png",
   "w": 192
+ },
+ "icons/g-rummy.webp": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261124_231700_4f83c91e-0706-45d4-844f-0aeb47fbaaa3.png",
+  "w": 384
  },
  "icons/g-slots.webp": {
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3I5uV6WXXT7rxQzwBDddv6dFe8T/hf_20261120_045959_2a06a1a4-befd-4757-890b-a12081ad8c18.png",
