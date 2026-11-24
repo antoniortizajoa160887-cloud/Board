@@ -23,7 +23,7 @@ const SCENES: [string, string][] = [
   ['hall', 'bg/hall.webp'], ['lobby', 'bg/casino.webp'], ['slots', 'bg/slots.webp'], ['roulette', 'bg/roulette.webp'],
   ['craps', 'bg/craps.webp'], ['holdem', 'bg/holdem.webp'], ['vpoker', 'bg/vpoker.webp'], ['baccarat', 'bg/baccarat.webp'],
   ['blackjack', 'bg/felt.webp'], ['bingo', 'bg/bingo.webp'], ['keno', 'bg/keno.webp'], ['pokerbingo', 'bg/pokerbingo.webp'],
-  ['checkers', 'bg/gamesroom.webp'], ['four', 'bg/gamesroom.webp'], ['colors', 'bg/colors.webp'], ['tycoon', 'bg/tycoon.webp'],
+  ['checkers', 'bg/gamesroom.webp'], ['pictures', 'bg/pokerbingo.webp'], ['dominoes', 'bg/gamesroom.webp'], ['race', 'bg/gamesroom.webp'], ['stars', 'bg/gamesroom.webp'], ['fivedice', 'bg/gamesroom.webp'], ['pearldiver', 'bg/gamesroom.webp'], ['memory', 'bg/gamesroom.webp'], ['rummy', 'bg/felt.webp'], ['gofish', 'bg/felt.webp'], ['fleet', 'bg/gamesroom.webp'], ['four', 'bg/gamesroom.webp'], ['colors', 'bg/colors.webp'], ['tycoon', 'bg/tycoon.webp'],
   ['zip-view', 'zip/bg-sunset.webp'],
 ];
 function setScene(r: HTMLElement, view: HTMLElement) {

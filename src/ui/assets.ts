@@ -81,3 +81,8 @@ export function sayCard(rank: number, suit: string) {
 export function sayPot(pot: 'center' | 'corners' | 'five' | 'poker') {
   play(`voice/${lang()}/pot/${pot}.mp3`, { interrupt: true });
 }
+
+/** Picture Bingo: Ollie calls a picture card by its id. */
+export function sayPic(id: string) {
+  play(`voice/${lang()}/pic/${id}.mp3`, { interrupt: true });
+}
