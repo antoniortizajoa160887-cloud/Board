@@ -32,7 +32,9 @@ body {
 button { font: inherit; color: inherit; cursor: pointer; }
 button:disabled { opacity: .45; cursor: default; }
 
-.view { height: 100%; display: flex; flex-direction: column; max-width: 720px; margin: 0 auto; padding: env(safe-area-inset-top) 12px calc(12px + env(safe-area-inset-bottom)); gap: 10px; overflow: hidden; animation: viewIn .28s ease-out; }
+.view { height: 100%; display: flex; flex-direction: column; max-width: 720px; margin: 0 auto; padding: env(safe-area-inset-top) 12px calc(12px + env(safe-area-inset-bottom)); gap: 10px; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; animation: viewIn .28s ease-out; }
+/* Long game screens scroll as a whole; parts keep their size unless they are meant to stretch (flex: 1). */
+.view > * { flex-shrink: 0; }
 @keyframes viewIn { from { opacity: 0; transform: translateY(8px); } }
 .scroll { flex: 1; overflow-y: auto; padding-bottom: 20px; }
 
@@ -918,3 +920,15 @@ img.pb-dealer { width: 76px; height: 76px; object-fit: contain; flex-shrink: 0; 
 .fl-big .fl-cell:not(:disabled):hover { background: #ffffff33; }
 .fl-left { display: flex; justify-content: center; gap: 18px; font-size: 13px; font-weight: 800; color: var(--muted); }
 .fl-mine { display: flex; justify-content: center; align-items: center; gap: 14px; }
+
+/* Poker Bingo: every board, to pick by what is on it */
+.pb-browse { display: block; margin: 0 auto; }
+.dialog:has(.pb-gallery) { width: min(680px, 100%); }
+.pb-gallery { display: flex; flex-direction: column; gap: 12px; }
+.pb-gal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
+@media (min-width: 560px) { .pb-gal-grid { grid-template-columns: repeat(3, 1fr); } }
+.pb-gal { padding: 4px; border-radius: 10px; border: 2px solid #f5c54244; background: linear-gradient(#0e5a3a, #083a26); color: var(--ink); text-align: center; }
+.pb-gal.on { border-color: var(--gold); box-shadow: 0 0 12px #f5c542aa; }
+.pb-gal-num { font-weight: 900; font-size: 13px; color: var(--gold2); margin-bottom: 3px; }
+.pb-gal .pb-grid { gap: 2px; }
+.pb-gal .pb-face { font-size: 9px; }
