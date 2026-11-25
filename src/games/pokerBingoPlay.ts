@@ -11,7 +11,7 @@ import { img, olliePath, sayCard, sayPot } from '../ui/assets';
 import { BOTS } from '../ui/colorsArt';
 import { coinBurst, fmt, h, sleep } from '../ui/dom';
 import type { Screen } from '../ui/router';
-import { topBar } from '../ui/shell';
+import { dialog, topBar } from '../ui/shell';
 import { howToPlay } from './howto';
 import { betStepper, cantAfford, resultBanner } from './kit';
 
@@ -71,7 +71,8 @@ export const pokerBingoScreen: Screen = root => {
   speedBtn.textContent = speedLabel();
   const oppSeg = h('div.seg');
   const picker = h('div.pb-picker');
-  const setup = h('div.pb-setup', {}, picker, h('div.pb-opp', {}, h('span', {}, tr('Players', 'Jugadores')), oppSeg), h('div.controls', {}, ante.el), costEl);
+  const browseBtn = h('button.btn.small.pb-browse', { onclick: () => browse() }, tr('See every board', 'Ver todos los tableros'));
+  const setup = h('div.pb-setup', {}, picker, browseBtn, h('div.pb-opp', {}, h('span', {}, tr('Players', 'Jugadores')), oppSeg), h('div.controls', {}, ante.el), costEl);
 
   function renderCost() {
     const per = ante.get() * 4 * picked.length;
@@ -92,6 +93,26 @@ export const pokerBingoScreen: Screen = root => {
         return h('button.pb-pick' + (on ? '.on' : ''), { disabled: running, 'aria-pressed': String(on), onclick: () => toggleBoard(n) }, String(n));
       }));
     picker.replaceChildren(set(0), set(1));
+  }
+
+  /** Every board with its 25 cards, so the player can pick by what is on it. Tap a board to add it or take it out. */
+  function browse() {
+    if (running) return;
+    const note = h('p.muted.small.center');
+    const grid = h('div.pb-gallery');
+    const draw = () => {
+      note.textContent = tr(`${picked.length} of ${MAX_BOARDS} picked · tap a board to add it or take it out`, `${picked.length} de ${MAX_BOARDS} elegidos · toca un tablero para ponerlo o quitarlo`);
+      grid.replaceChildren(...[0, 1].map(k => h('div.pb-gal-set', {},
+        h('div.pb-pick-label', {}, tr(`Set ${k + 1}`, `Juego ${k + 1}`)),
+        h('div.pb-gal-grid', {}, ...Array.from({ length: SET_SIZE }, (_, i) => {
+          const n = k * SET_SIZE + i + 1, on = picked.includes(n);
+          return h('button.pb-gal' + (on ? '.on' : ''), { 'aria-pressed': String(on), onclick: () => { toggleBoard(n); draw(); } },
+            h('div.pb-gal-num', {}, on ? `#${n} ✓` : `#${n}`),
+            h('div.pb-grid', {}, ...BOARDS[n - 1].map((c, j) => h('div.pb-cell' + (j === CENTER ? '.center' : '') + (CORNERS.includes(j) ? '.corner' : ''), {}, mini(c)))));
+        })))));
+    };
+    draw();
+    dialog(tr('Pick your boards', 'Elige tus tableros'), h('div', {}, note, grid), [{ label: tr('Done', 'Listo'), primary: true }]);
   }
 
   function toggleBoard(n: number) {
